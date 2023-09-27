@@ -80,11 +80,13 @@
     <script src="assets/theme/js/script.js"></script>
     <script src="assets/formoid/formoid.min.js"></script>
 
-    <!-- Firebase JavaScript SDK -->
+    <!-- Firebase JavaScript SDK 
     <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-storage.js"></script>  -->
+	
+	<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
 
     <script>
         // Replace with your Firebase config
@@ -100,7 +102,11 @@ appId: "1:942089850758:web:bc767461bc426a904e2607"
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+		
+		 // Reference to the Firebase Realtime Database
+        var database = firebase.database();
 
+        // Function to submit the form
         function submitForm() {
             var name = document.getElementById('name-form02-0').value;
             var message = document.getElementById('textarea-form02-0').value;
@@ -110,9 +116,12 @@ appId: "1:942089850758:web:bc767461bc426a904e2607"
                 return false;
             }
 
-            var userMessagesRef = firebase.database().ref('messages');
+            // Reference to the "messages" node in your Firebase Database
+            var messagesRef = database.ref('messages');
 
-            userMessagesRef.push({
+            // Push the message data to Firebase
+            var newMessageRef = messagesRef.push();
+            newMessageRef.set({
                 name: name,
                 message: message
             });
