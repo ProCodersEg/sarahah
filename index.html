@@ -33,15 +33,13 @@
                            </h2>
                            <p id="userName">Tell your openion honsetly</p>
                         </div>
-                       
                         <label>
                         <input type="text" name="subject" placeholder="Your Name (opetional)" title="" id="name">
                         </label>
                         <label>
-                        <textarea name="message" required="" id="message" dir="auto" maxlength="500" oninput="updateCharacterCount()"></textarea>
-						<div id="char-count">Characters remaining : 500</div>
+                           <textarea name="message" required="" id="message" dir="auto" maxlength="500" oninput="updateCharacterCount()"></textarea>
+                           <div id="char-count">Characters remaining : 500</div>
                         </label>
-						 						 
                         <div style="text-align: center;">
                            <div id="idemoj" style="width:97%; background:#fff;margin:5px;padding:5px;display:block;font-size:22px;">
                               <a onclick="sendemoji(' 😀 ');"> 😀 </a>
@@ -70,6 +68,9 @@
                            <button class="tap blue full-width" type="submit">Submit Message</button>
                         </div>
                      </form>
+                  </div>
+                  <div id="invalid-user-id-toast" class="form-message error">
+                     Invalid user ID! Please check the URL.
                   </div>
                   <div id="toast-message" class="form-message success">
                      Message sent!
@@ -168,10 +169,47 @@
                  var results = regex.exec(location.search);
                  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
                  }
+         
+         // Function to check if the user_id is valid
+         function isUserIdValid(userId) {
+         // Check if userId is missing or empty
+         if (!userId) {
+         return false;
+         }
+         
+         // Assuming you have a reference to your Firebase database
+         var usersRef = firebase.database().ref('users');
+         
+         // Check if userId exists in the database
+         return usersRef.child(userId).once('value')
+         .then(function(snapshot) {
+            return snapshot.exists();
+         });
+         }
          	
                  
             // Fetch the user ID from the URL
             var userId = getURLParameter('user_id');
+         
+         // Check if the user_id is valid
+         isUserIdValid(userId)
+         .then(function(isValid) {
+         // Disable the submit button and prevent form submission if user_id is not valid
+         if (!isValid) {
+            var submitButton = document.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+            showInvalidUserIdToast(); // Show the invalid user_id toast message
+         } else {
+            // Assuming you have the user's UID stored in userId
+            var userNameRef = firebase.database().ref('users/' + userId + '/name');
+            // Fetch the user's name and set it as the placeholder for the textarea
+            userNameRef.once('value', function(snapshot) {
+                // ...
+            });
+         }
+         });
            
            // Assuming you have the user's UID stored in userId
             var userNameRef = firebase.database().ref('users/' + userId + '/name');
@@ -257,16 +295,16 @@
          
                  });
             }
-		  
-		  function updateCharacterCount() {
-    var textarea = document.getElementById('message');
-    var charCount = document.getElementById('char-count');
-    var maxLength = 500;
-    
-    var remainingChars = maxLength - textarea.value.length;
-    
-    charCount.textContent = 'Characters remaining: ' + remainingChars;
-}
+         
+         function updateCharacterCount() {
+         var textarea = document.getElementById('message');
+         var charCount = document.getElementById('char-count');
+         var maxLength = 500;
+         
+         var remainingChars = maxLength - textarea.value.length;
+         
+         charCount.textContent = 'Characters remaining: ' + remainingChars;
+         }
            
            
             // Function to insert the selected emoji into the input field at the cursor position
@@ -282,7 +320,18 @@
                 messageInput.focus();
                 messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
             }
-           
+         
+         // Function to show the invalid user_id toast message
+         function showInvalidUserIdToast() {
+         var invalidUserIdToast = document.getElementById('invalid-user-id-toast');
+         if (invalidUserIdToast) {
+         invalidUserIdToast.style.display = 'block';
+         // Hide the toast message after 3 seconds (3000 milliseconds)
+         setTimeout(function() {
+            invalidUserIdToast.style.display = 'none';
+         }, 3000);
+         }
+         }
            
               
       </script>
