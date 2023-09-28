@@ -33,15 +33,21 @@
                            </h2>
                            <p id="userName">Tell your openion honsetly</p>
                         </div>
-                       
+                        <div class="flex half spacing">
+                           <div>
+                              <label> </label>
+                           </div>
+                           <div>
+                              <label> </label>
+                           </div>
+                        </div>
                         <label>
                         <input type="text" name="subject" placeholder="Your Name (opetional)" title="" id="name">
                         </label>
                         <label>
-                        <textarea name="message" required="" id="message" dir="auto" maxlength="500" oninput="updateCharacterCount()"></textarea>
-						<div id="char-count">Characters remaining : 500</div>
+                           <textarea name="message" required="" id="message" dir="auto" maxlength="500" oninput="updateCharacterCount()"></textarea>
+                           <div id="char-count">Characters remaining : 500</div>
                         </label>
-						 						 
                         <div style="text-align: center;">
                            <div id="idemoj" style="width:97%; background:#fff;margin:5px;padding:5px;display:block;font-size:22px;">
                               <a onclick="sendemoji(' 😀 ');"> 😀 </a>
@@ -257,16 +263,16 @@
          
                  });
             }
-		  
-		  function updateCharacterCount() {
-    var textarea = document.getElementById('message');
-    var charCount = document.getElementById('char-count');
-    var maxLength = 500;
-    
-    var remainingChars = maxLength - textarea.value.length;
-    
-    charCount.textContent = 'Characters remaining: ' + remainingChars;
-}
+         
+         function updateCharacterCount() {
+         var textarea = document.getElementById('message');
+         var charCount = document.getElementById('char-count');
+         var maxLength = 500;
+         
+         var remainingChars = maxLength - textarea.value.length;
+         
+         charCount.textContent = 'Characters remaining: ' + remainingChars;
+         }
            
            
             // Function to insert the selected emoji into the input field at the cursor position
