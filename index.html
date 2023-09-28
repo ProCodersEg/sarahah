@@ -60,34 +60,8 @@
 
 						
                            <label>
-                                <textarea name="message" required="" id="message" dir="auto" ></textarea>
+                                <textarea name="message" required="" id="message"></textarea>
                             </label>
-							
-							<div style="text-align: center;">
-							<div id="idemoj" style="width:97%; background:#fff;margin:5px;padding:5px;display:block;font-size:22px;">
-<a onclick="sendemoji(' 😀 ');"> 😀 </a>
-<a onclick="sendemoji(' 😅 ');"> 😅 </a>
-<a onclick="sendemoji(' 😂 ');"> 😂 </a>
-<a onclick="sendemoji(' 🤣 ');"> 🤣 </a>
-<a onclick="sendemoji(' 🙂 ');"> 🙂 </a>
-<a onclick="sendemoji(' 😍 ');"> 😍 </a>
-<a onclick="sendemoji(' 😘 ');"> 😘 </a>
-<a onclick="sendemoji(' 😭 ');"> 😭 </a>
-<a onclick="sendemoji(' 😢 ');"> 😢 </a>
-<a onclick="sendemoji(' 😎 ');"> 😎 </a>
-<a onclick="sendemoji(' 🤨 ');"> 🤨 </a>
-<a onclick="sendemoji(' 😳 ');"> 😳 </a>
-<a onclick="sendemoji(' 💩 ');"> 💩 </a>
-<a onclick="sendemoji(' 😡 ');"> 😡 </a>
-<a onclick="sendemoji(' 😷 ');"> 😷 </a>
-<a onclick="sendemoji(' 👋 ');"> 👋 </a>
-<a onclick="sendemoji(' 💋 ');"> 💋 </a>
-<a onclick="sendemoji(' 🙈 ');"> 🙈 </a>
-<a onclick="sendemoji(' 🌹 ');"> 🌹 </a>
-<a onclick="sendemoji(' ❤️ ');"> ❤️ </a>
-</div>
-								</div>
-
 
                             <div class="aero-form-submit">
                                 <button class="tap blue full-width" type="submit">Submit Message</button>
@@ -187,7 +161,6 @@
  
  
   <script>
-	  
  var firebaseConfig = {
          apiKey: "AIzaSyBEtXBiFXnk3jPmb6wdfW4SOvMXJQIjCzg",
          authDomain: "saraha-5e7fd.firebaseapp.com",
@@ -281,19 +254,6 @@ function showSuccessToast() {
         toastMessage.style.display = 'none';
     }, 2500); // Change 3000 to the desired toast display duration in milliseconds (3 seconds)
 }
-	  
-	   // Function to insert the selected emoji into the input field at the cursor position
-    function sendemoji(emoji) {
-        var messageInput = document.getElementById('message');
-        var startPos = messageInput.selectionStart;
-        var endPos = messageInput.selectionEnd;
-        var text = messageInput.value;
-        var newText = text.substring(0, startPos) + emoji + text.substring(endPos, text.length);
-        
-        messageInput.value = newText;
-        messageInput.focus();
-        messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
-    }
          
          function getInputVal(id) {
          return document.getElementById(id).value;
