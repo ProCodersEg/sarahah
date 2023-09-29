@@ -71,11 +71,11 @@ userNameRef.once('value', function(snapshot) {
 	var userName = snapshot.val();
 	if (userName) {
 		// Update the textarea's placeholder with the retrieved username userName
-		document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
+		document.getElementById('message').placeholder = `Type and send your message to "${userName}" privately here...`;
 		document.getElementById('userName').textContent = `${userName}`;
 	} else {
 		// Handle the case where the username is not found
-		document.getElementById('message').placeholder = `Type your message to this user...`;
+		document.getElementById('message').placeholder = `Type your message...`;
 		document.getElementById('userName').textContent = `Tell your openion honsetly`;
 	}
 });
