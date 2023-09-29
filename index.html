@@ -147,8 +147,11 @@
       <script src="js/aero-forms.js"></script>
       <!-- demo.js - Used for demonstration purposes -->
       <script src="js/demo.js"></script>
-      <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
-      <script>
+      
+<!--       <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script> -->
+      
+      <script type="module"> 
+         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js'
          var firebaseConfig = {
                  apiKey: "AIzaSyBEtXBiFXnk3jPmb6wdfW4SOvMXJQIjCzg",
                  authDomain: "saraha-5e7fd.firebaseapp.com",
