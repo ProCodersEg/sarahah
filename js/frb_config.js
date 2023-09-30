@@ -11,6 +11,10 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+const messaging = firebase.messaging();
+const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO86vrCEJ1sT-f6e8IS0zacaQ8_jYXVCxVLfUiOb8ZA9kvci4NA1kGl1f32Ybx--DCIhFL5itdZl7eWb-iX_nyxHhc3ktP";
+// Replace with your actual Firebase Cloud Messaging server key
+
 // Function to get URL parameters
 function getURLParameter(name) {
 	name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -71,18 +75,18 @@ userNameRef.once('value', function(snapshot) {
 	var userName = snapshot.val();
 	if (userName) {
 		// Update the textarea's placeholder with the retrieved username userName
-		document.getElementById('message').placeholder = `Type and send your message to "${userName}" privately here...`;
+		document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
 		document.getElementById('userName').textContent = `${userName}`;
 	} else {
 		// Handle the case where the username is not found
-		document.getElementById('message').placeholder = `Type your message...`;
+		document.getElementById('message').placeholder = `Type your message to this user...`;
 		document.getElementById('userName').textContent = `Tell your openion honsetly`;
 	}
 });
 
 
 
-// Create a reference to the user's secrets in the database
+// Create a reference to the user's messages in the database
 var userMessagesRef = firebase.database().ref('allSecrets/' + userId + '/secrets');
 
 document.getElementById('contact-form').addEventListener('submit', submitForm);
@@ -90,13 +94,27 @@ document.getElementById('contact-form').addEventListener('submit', submitForm);
 function submitForm(e) {
 	e.preventDefault();
 
+	// Show the loading dialog
+	var loadingDialog = document.getElementById('loading-dialog');
+
+	if (loadingDialog) {
+		loadingDialog.style.display = 'block';
+	}
+
 
 	// Get the input values within the submitForm function
 	var name = getInputVal('name');
 	var message = getInputVal('message');
 
-	saveMessage(name, message);
+
+	// Set a 5-second delay for demonstration purposes
+	setTimeout(function() {
+		saveMessage(name, message);
+	}, 4000); // 3000 milliseconds (5 seconds) delay
+
 }
+
+
 
 // Function to show the success toast message
 function showSuccessToast() {
@@ -132,26 +150,16 @@ function saveMessage(name, message) {
 			// Show the loading dialog
 			var loadingDialog = document.getElementById('loading-dialog');
 
+
 			if (loadingDialog) {
-				loadingDialog.style.display = 'block';
+				loadingDialog.style.display = 'none';
 			}
 
-
-
-			// Set a 5-second delay for demonstration purposes
-			setTimeout(function() {
-
-				// After 5 seconds, hide the loading dialog
-
-				if (loadingDialog) {
-					loadingDialog.style.display = 'none';
-				}
-
-				showSuccessToast(); // Show the success toast message
-				// Call the function to reset the character counter to 500
-				updateCharacterCount();
-				document.getElementById('contact-form').reset();
-			}, 4000); // 3000 milliseconds (5 seconds) delay
+			showSuccessToast(); // Show the success toast message
+			// Call the function to reset the character counter to 500
+			updateCharacterCount();
+			document.getElementById('contact-form').reset();
+			sendNotificationToUser();
 
 			// You can add any code here that you want to run after a successful save
 			// For example, you can clear the message input field or display a success message.
@@ -184,6 +192,56 @@ function sendemoji(emoji) {
 	messageInput.focus();
 	messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
 }
+
+
+//send notification
+function sendNotificationToUser() {
+	// Assuming you have the user's UID stored in userId
+	var userFCMTokenRef = firebase.database().ref('users/' + userId + '/token');
+	// Fetch the user's FCM token from the database
+	userFCMTokenRef.once('value', function(snapshot) {
+		var userFCMToken = snapshot.val();
+
+		if (userFCMToken) {
+			// Create the notification object
+			const notification = {
+				to: userFCMToken, // FCM token from the database
+				notification: {
+					title: "New Message",
+					body: "You have a new message from a friend!",
+				},
+			};
+			sendNotification(notification);
+		} else {
+			// Handle the case where the FCM token is not found in the database
+			console.error("FCM token not found for user");
+		}
+	});
+}
+
+
+// Function to send the notification (you can define this elsewhere in your code)
+function sendNotification(notification) {
+	const options = {
+		method: "POST",
+		headers: {
+			Authorization: `key=${serverKey}`,
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(notification),
+	};
+
+	fetch("https://fcm.googleapis.com/fcm/send", options)
+		.then((response) => response.json())
+		.then((data) => {
+			console.log("Successfully sent notification:", data);
+		})
+		.catch((error) => {
+			console.error("Error sending notification:", error);
+		});
+
+}
+// end send notification
 
 
 // Function to show the invalid user_id toast message
