@@ -23,24 +23,8 @@ function getURLParameter(name) {
 	return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-// Fetch the username from the URL
-var username = getURLParameter('username');
-if (username) {
-    // Assuming you have a "users" node in your database where usernames are stored
-    var usersRef = firebase.database().ref('users');
 
-    // Query the database to find the user by username
-    usersRef.orderByChild('username').equalTo(username).once('value', function(snapshot) {
-        if (snapshot.exists()) {
-            // Get the first matching user (assuming usernames are unique)
-            var userId = Object.keys(snapshot.val())[0];
-
-            if (userId) {
-                // Now you have the userId based on the username
-                // You can proceed with the rest of your code
-                console.log('User ID based on username:', userId);
-
-		    // Function to check if the user_id is valid
+// Function to check if the user_id is valid
 function isUserIdValid(userId) {
 	// Check if userId is missing or empty
 	if (!userId) {
@@ -60,7 +44,7 @@ function isUserIdValid(userId) {
 
 
 // Fetch the user ID from the URL
-//var userId = getURLParameter('user_id');
+var userId = getURLParameter('user_id');
 
 
 // Check if the user_id is valid
@@ -270,19 +254,4 @@ function showInvalidUserIdToast() {
 			invalidUserIdToast.style.display = 'none';
 		}, 3000);
 	}
-
-                // Continue with your code using userId
-            } else {
-                console.error('User ID not found for the given username.');
-            }
-        } else {
-            console.error('No user found with the provided username.');
-        }
-    });
-} else {
-    console.error('Username not provided in the URL.');
-}
-
-
-
 }
