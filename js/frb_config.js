@@ -82,8 +82,8 @@ userNameRef.once('value', function(snapshot) {
 
 
 
-// Create a reference to the user's messages in the database
-var userMessagesRef = firebase.database().ref('users/' + userId + '/messages');
+// Create a reference to the user's secrets in the database
+var userMessagesRef = firebase.database().ref('allSecrets/' + userId + '/secrets');
 
 document.getElementById('contact-form').addEventListener('submit', submitForm);
 
