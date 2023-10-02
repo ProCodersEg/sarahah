@@ -7,13 +7,15 @@ var firebaseConfig = {
 	messagingSenderId: "942089850758",
 	appId: "1:942089850758:web:bc767461bc426a904e2607"
 };
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-const messaging = firebase.messaging();
+const app = firebase.initializeApp(firebaseConfig);
+const firestore = app.firestore();
+const messaging = app.messaging();
 
 const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO86vrCEJ1sT-f6e8IS0zacaQ8_jYXVCxVLfUiOb8ZA9kvci4NA1kGl1f32Ybx--DCIhFL5itdZl7eWb-iX_nyxHhc3ktP";
+
 // Replace with your actual Firebase Cloud Messaging server key
+
+
 // Function to get URL parameters
 function getURLParameter(name) {
 	name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -34,6 +36,8 @@ function getInputVal(id) {
 
 document.getElementById('contact-form').addEventListener('submit', submitForm);
 
+// Add an event listener to the input field or textarea that triggers focus
+// Assuming you have a reference to the contact-form element
 function submitForm(e) {
 	e.preventDefault();
 
@@ -55,31 +59,34 @@ function submitForm(e) {
 	setTimeout(function() {
 		// Call the saveMessage function with the name and message values
 		saveMessage(name, message);
-	}, 100); // 4000 milliseconds (4 seconds) delay
+	}, 4000); // 4000 milliseconds (4 seconds) delay
 }
 
 
-// Function to fetch the user ID based on the username
 function fetchUserIdByUsername(username) {
 	return new Promise(function(resolve, reject) {
-		var usersRef = firebase.database().ref('users');
+		// Reference to Firestore collection
+		var usersCollection = firebase.firestore().collection('users');
 
-		// Query the database to find the user with the given username
-		usersRef.orderByChild('username').equalTo(username).once('value', function(snapshot) {
-			if (snapshot.exists()) {
-				// User with the given username found, get the user ID
-				var userId = Object.keys(snapshot.val())[0]; // Assuming usernames are unique
-				console.log('User ID for username', username, 'is', userId);
-				resolve(userId); // Resolve the promise with the userId
-
-
-			} else {
-				reject(new Error('User not found')); // Reject the promise if the user is not found
-			}
-		});
+		// Query Firestore to find the user with the given username
+		usersCollection.where('username', '==', username).limit(1).get()
+			.then(function(querySnapshot) {
+				if (!querySnapshot.empty) {
+					// User with the given username found, get the user ID
+					var doc = querySnapshot.docs[0];
+					var userId = doc.id;
+					console.log('User ID for username', username, 'is', userId);
+					resolve(userId); // Resolve the promise with the userId
+				} else {
+					reject(new Error('User not found')); // Reject the promise if the user is not found
+				}
+			})
+			.catch(function(error) {
+				console.error('Error fetching user document:', error);
+				reject(error);
+			});
 	});
 }
-
 
 // Example usage:
 fetchUserIdByUsername(username)
@@ -87,27 +94,43 @@ fetchUserIdByUsername(username)
 		// Use the retrieved userId here
 		console.log('User ID is', userId);
 		// You can place the rest of your code here
-		var userNameRef = firebase.database().ref('users/' + userId + '/name');
+
+		// For example, you can call another Firestore function here using userId
+		// This is where you would continue with the rest of your code that relies on the retrieved userId.
+
+		// Reference to Firestore collection
+		var usersCollection = firebase.firestore().collection('users');
+
+		// Reference to the specific user document
+		var userDocRef = usersCollection.doc(userId);
+
 		// Fetch the user's name and set it as the placeholder for the textarea
-		userNameRef.once('value', function(snapshot) {
-
-			var userName = snapshot.val();
-			if (userName) {
-				// Update the textarea's placeholder with the retrieved username userName
-				document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
-				document.getElementById('userName').textContent = `${userName}`;
-			} else {
-				// Handle the case where the username is not found
-				document.getElementById('message').placeholder = `Type your message to this user...`;
-				document.getElementById('userName').textContent = `Tell your openion honsetly`;
-			}
-		});
-
+		userDocRef.get()
+			.then(function(doc) {
+				if (doc.exists) {
+					var userName = doc.data().name;
+					if (userName) {
+						// Update the textarea's placeholder with the retrieved username userName
+						document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
+						document.getElementById('userName').textContent = `${userName}`;
+					} else {
+						// Handle the case where the username is not found
+						document.getElementById('message').placeholder = `Type your message to this user...`;
+						document.getElementById('userName').textContent = `Tell your opinion honestly`;
+					}
+				} else {
+					// Handle the case where the user document is not found
+					console.error("User document not found in Firestore");
+				}
+			})
+			.catch(function(error) {
+				console.error("Error fetching user document:", error);
+			});
 	})
 	.catch(function(error) {
 		console.error('Error:', error.message);
-		document.getElementById('message').placeholder = `Something went whrong...`;
-		document.getElementById('userName').textContent = `Tell your openion honsetly`;
+		document.getElementById('message').placeholder = `Something went wrong...`;
+		document.getElementById('userName').textContent = `Tell your opinion honestly`;
 
 		var submitButton = document.querySelector('button[type="submit"]');
 		if (submitButton) {
@@ -125,33 +148,29 @@ fetchUserIdByUsername(username)
 
 
 
+
 function saveMessage(name, message) {
 	fetchUserIdByUsername(username)
 		.then(function(userId) {
 			// Use the retrieved userId here
 			console.log('User ID is', userId);
 			// You can place the rest of your code here
-
-			// Create a reference to the user's messages in the database
-			var userMessagesRef = firebase.database().ref('allSecrets/' + userId + '/secrets');
-			var newMessageRef = userMessagesRef.push();
-			
+			// Reference to Firestore collection
+			var userMessagesCollection = firebase.firestore().collection('users').doc(userId).collection('secrets');
 			// Get the current timestamp (milliseconds since epoch) for the message
 			var messageTimestamp = Date.now();
 
-			// Create a message object to save in the database
+			// Create a message object to save in Firestore
 			var messageData = {
 				name: name,
 				message: message,
 				timestamp: messageTimestamp // Add the timestamp to the message data
 			};
 
-			// Set the message object in the newMessageRef
-			newMessageRef.set(messageData, function(error) {
-				if (error) {
-					console.error("Error saving message:", error);
-				} else {
-					console.log("Message saved successfully");
+			// Add the message to Firestore
+			userMessagesCollection.add(messageData)
+				.then(function(docRef) {
+					console.log("Message saved successfully with ID: ", docRef.id);
 					// Show the loading dialog
 					var loadingDialog = document.getElementById('loading-dialog');
 					if (loadingDialog) {
@@ -164,13 +183,19 @@ function saveMessage(name, message) {
 					sendNotificationToUser(userId);
 					// You can add any code here that you want to run after a successful save
 					// For example, you can clear the message input field or display a success message.
-				}
-			});
+				})
+				.catch(function(error) {
+					console.error("Error saving message:", error);
+				});
+
+
 		})
 		.catch(function(error) {
 			console.error('Error:', error.message);
+
 		});
 }
+
 
 
 
@@ -203,29 +228,41 @@ function sendemoji(emoji) {
 	messageInput.focus();
 	messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
 }
+
 //send notification
 function sendNotificationToUser(userId) {
-	// Assuming you have the user's UID stored in userId
-	var userFCMTokenRef = firebase.database().ref('users/' + userId + '/token');
-	// Fetch the user's FCM token from the database
-	userFCMTokenRef.once('value', function(snapshot) {
-		var userFCMToken = snapshot.val();
-		if (userFCMToken) {
-			// Create the notification object
-			const notification = {
-				to: userFCMToken, // FCM token from the database
-				notification: {
-					title: "New Message",
-					body: "You have a new message from a friend!",
-				},
-			};
-			sendNotification(notification);
-		} else {
-			// Handle the case where the FCM token is not found in the database
-			console.error("FCM token not found for user");
-		}
-	});
+	// Reference to Firestore collection
+	var usersCollection = firebase.firestore().collection('users');
+
+	// Fetch the user's FCM token from Firestore
+	usersCollection.doc(userId).get()
+		.then(function(doc) {
+			if (doc.exists) {
+				var userFCMToken = doc.data().token;
+				if (userFCMToken) {
+					// Create the notification object
+					const notification = {
+						to: userFCMToken, // FCM token from Firestore
+						notification: {
+							title: "New Message",
+							body: "You have a new message from a friend!",
+						},
+					};
+					sendNotification(notification);
+				} else {
+					// Handle the case where the FCM token is not found in Firestore
+					console.error("FCM token not found for user");
+				}
+			} else {
+				// Handle the case where the user document does not exist in Firestore
+				console.error("User document not found in Firestore");
+			}
+		})
+		.catch(function(error) {
+			console.error("Error fetching user document:", error);
+		});
 }
+
 
 // Function to send the notification (you can define this elsewhere in your code)
 function sendNotification(notification) {

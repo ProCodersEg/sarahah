@@ -12,6 +12,8 @@
       <link rel="stylesheet" href="css/demo.css">
       <link rel="preconnect" href="https://fonts.gstatic.com/">
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+	   
+	  
    </head>
    <body>
       <!-- Add a loading dialog -->
@@ -26,7 +28,8 @@
             <div class="section-flex flex half middle">
                <div>
                   <div class="aero-form-container">
-                     <form action="#" class="aero-form white form-shadow" method="post" id="contact-form" >
+				  
+                     <form  id="contact-form"  class="aero-form white form-shadow" method="post" >
                         <div class="aero-form-header">
                            <h2>
                               Be Honest With! 
@@ -38,9 +41,10 @@
                         <input type="text" name="subject" placeholder="Your Name (opetional)" title="" id="name">
                         </label>
                         <label>
-                        <textarea name="message" required="" id="message" dir="auto" maxlength="500" oninput="updateCharacterCount()"></textarea>
+                        <textarea name="message" required="" id="message" dir="auto" maxlength="500" oninput="updateCharacterCount()" ></textarea>
 						<div id="char-count">Characters remaining : 500</div>
                         </label>
+					
 						 						 
                         <div style="text-align: center;">
                            <div id="idemoj" style="width:97%; background:#fff;margin:5px;padding:5px;display:block;font-size:22px;">
@@ -66,16 +70,18 @@
                               <a onclick="sendemoji(' ❤️ ');"> ❤️ </a>
                            </div>
                         </div>
-                        <div class="aero-form-submit">
+						<div class="aero-form-submit">
                            <button class="tap blue full-width" type="submit">Submit Message</button>
                         </div>
+						
                      </form>
                   </div>
-
-		       <div id="invalid-user-id-toast" class="form-message error">
+				  
+				  <div id="invalid-user-id-toast" class="form-message error">
     Invalid user ID! Please check the URL.
 </div>
-		       
+
+
                   <div id="toast-message" class="form-message success">
                      Message sent!
                   </div>
@@ -147,15 +153,21 @@
             </div>
          </div>
       </div>
-      
-	  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
 	  
+	
+
+	  
+	 <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-messaging.js"></script>
+
+	 
       <!-- Aero Forms JS -->
       <script src="js/aero-forms.js"></script>
       <!-- demo.js - Used for demonstration purposes -->
       <script src="js/demo.js"></script>
-     <script src="js/frb_config.js"></script>
-	 
+     <script src="js/fsdb.js"></script>
+     
    </body>
    <!-- Mirrored from weblucas.info/projects/aero-forms/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Sep 2023 23:56:01 GMT -->
 </html>
