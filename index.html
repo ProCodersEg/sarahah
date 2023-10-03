@@ -12,10 +12,31 @@
       <link rel="stylesheet" href="css/demo.css">
       <link rel="preconnect" href="https://fonts.gstatic.com/">
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
-	   
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 	  
    </head>
    <body>
+   
+   <!-- Add a button in the top left corner -->
+<div id="language-button" class="language-button">
+<i class="fa-solid fa-hands"></i>
+</div>
+
+<!-- Add a language selection dialog -->
+<div id="language-dialog" class="language-dialog">
+    <div class="dialog-content">
+        <div class="option" id="arabic-option">
+<i class="fa-solid fa-repeat"></i>
+			العربيه
+			</div>
+        <div class="option" id="english-option">
+<i class="fa-solid fa-repeat"></i>
+            English
+        </div>
+    </div>
+</div>
+
       <!-- Add a loading dialog -->
       <div id="loading-dialog">
          <div id="loading-content">
@@ -167,6 +188,52 @@
       <!-- demo.js - Used for demonstration purposes -->
       <script src="js/demo.js"></script>
      <script src="js/fsdb.js"></script>
+	 
+	 <script>
+   // Get references to the button and dialog
+const languageButton = document.getElementById('language-button');
+const languageDialog = document.getElementById('language-dialog');
+
+// Function to toggle the dialog
+function toggleDialog() {
+    if (languageDialog.style.display === 'block') {
+        languageDialog.style.display = 'none'; // Close the dialog if it's open
+    } else {
+        languageDialog.style.display = 'block'; // Open the dialog if it's closed
+    }
+}
+
+// Show/hide the dialog when the button is clicked
+languageButton.addEventListener('click', () => {
+    toggleDialog();
+});
+
+// Handle the language options
+const arabicOption = document.getElementById('arabic-option');
+const englishOption = document.getElementById('english-option');
+
+arabicOption.addEventListener('click', () => {
+    // Add your code to switch the page language to Arabic
+    alert('Switched to Arabic');
+    toggleDialog(); // Close the dialog
+});
+
+englishOption.addEventListener('click', () => {
+    // Add your code to switch the page language to English
+    alert('Switched to English');
+    toggleDialog(); // Close the dialog
+});
+
+// Close the dialog when clicking anywhere outside of it
+document.addEventListener('click', (e) => {
+    if (!languageDialog.contains(e.target) && e.target !== languageButton) {
+        languageDialog.style.display = 'none';
+    }
+});
+
+</script>
+
+	 
      
    </body>
    <!-- Mirrored from weblucas.info/projects/aero-forms/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Sep 2023 23:56:01 GMT -->

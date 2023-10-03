@@ -834,6 +834,79 @@ pre{
     }
 }
 
+ 
+/* Style for the language button */
+.language-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #000000;
+    color: #fff;
+    border-radius: 50%; /* Make it circular */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999; /* Set a higher z-index value */
+}
+
+/* Style for the icon inside the button */
+.language-button i {
+    font-size: 20px; /* Adjust the icon size */
+	    pointer-events: none; /* Make the icon unclickable */
+
+}
+
+/* Style for the language dialog */
+.language-dialog {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10000; /* Set a higher z-index value */
+    width: 200px; /* Set the width of the dialog */
+}
+
+/* Style for the dialog content */
+.dialog-content {
+    padding: 10px;
+}
+
+/* Style for language options */
+.option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease; /* Add a smooth background color transition */
+}
+
+.option:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
+}
+
+/* Style for language icons */
+.option i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* Style for language option text */
+.option span {
+    font-size: 16px;
+}
+
+/* Add space between language options */
+.option + .option {
+    margin-top: 5px;
+}
+
+   
 @media (max-width: 480px) {
     .show h2{
         font-size: 36px;
