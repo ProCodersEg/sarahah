@@ -116,7 +116,9 @@ fetchUserIdByUsername(username)
 
 						// Update the Open Graph Protocol meta tags with the user-specific information
     							//document.querySelector('meta[property="og:title"]').content = username;
-    							document.querySelector('meta[property="og:description"]').content = `Send mto "${userName}" private message and tell hem all in your heart`;
+						    	const description = `Send mto "${userName}" private message and tell hem all in your heart`; // Replace with your logic to fetch the description
+							document.querySelector('meta[property="og:description"]').setAttribute("content", description);
+    							//document.querySelector('meta[property="og:description"]').content = `Send mto "${userName}" private message and tell hem all in your heart`;
 					} else {
 						// Handle the case where the username is not found
 						document.getElementById('message').placeholder = `Type your message to this user...`;
