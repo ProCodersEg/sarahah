@@ -113,10 +113,16 @@ fetchUserIdByUsername(username)
 						// Update the textarea's placeholder with the retrieved username userName
 						document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
 						document.getElementById('userName').textContent = `${userName}`;
+
+						// Update the Open Graph Protocol meta tags with the user-specific information
+    							//document.querySelector('meta[property="og:title"]').content = username;
+    							document.querySelector('meta[property="og:description"]').content = `Send mto "${userName}" private message and tell hem all in your heart`;
 					} else {
 						// Handle the case where the username is not found
 						document.getElementById('message').placeholder = `Type your message to this user...`;
 						document.getElementById('userName').textContent = `Tell your opinion honestly`;
+						document.querySelector('meta[property="og:description"]').content = `You can use Aero Forms in few easy steps, docs and demos included. Source files are compatible with any back-end environment`;
+
 					}
 				} else {
 					// Handle the case where the user document is not found
