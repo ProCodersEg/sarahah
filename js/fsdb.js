@@ -112,13 +112,13 @@ fetchUserIdByUsername(username)
 
 						
 						 // Update the OGP meta tag for description
-                    				document.querySelector('meta[property="og:description"]').content = `Send a private message to "${userName}" and share your thoughts.`;
+                    				//document.querySelector('meta[property="og:description"]').content = `Send a private message to "${userName}" and share your thoughts.`;
 						
 					} else {
 						// Handle the case where the username is not found
 						document.getElementById('message').placeholder = `Type your message to this user...`;
 						document.getElementById('userName').textContent = `Tell your opinion honestly`;
-                    				document.querySelector('meta[property="og:description"]').content = `You can use Aero Forms in few easy steps, docs and demos included. Source files are compatible with any back-end environment`;
+                    				//document.querySelector('meta[property="og:description"]').content = `You can use Aero Forms in few easy steps, docs and demos included. Source files are compatible with any back-end environment`;
 
 					}
 				} else {
