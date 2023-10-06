@@ -94,16 +94,12 @@ fetchUserIdByUsername(username)
 		// Use the retrieved userId here
 		console.log('User ID is', userId);
 		// You can place the rest of your code here
-
 		// For example, you can call another Firestore function here using userId
 		// This is where you would continue with the rest of your code that relies on the retrieved userId.
-
 		// Reference to Firestore collection
 		var usersCollection = firebase.firestore().collection('users');
-
 		// Reference to the specific user document
 		var userDocRef = usersCollection.doc(userId);
-
 		// Fetch the user's name and set it as the placeholder for the textarea
 		userDocRef.get()
 			.then(function(doc) {
@@ -114,16 +110,15 @@ fetchUserIdByUsername(username)
 						document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
 						document.getElementById('userName').textContent = `${userName}`;
 
-						// Update the Open Graph Protocol meta tags with the user-specific information
-    							//document.querySelector('meta[property="og:title"]').content = username;
-						    	const description = `Send mto "${userName}" private message and tell hem all in your heart`; // Replace with your logic to fetch the description
-							document.querySelector('meta[property="og:description"]').setAttribute("content", description);
-    							//document.querySelector('meta[property="og:description"]').content = `Send mto "${userName}" private message and tell hem all in your heart`;
+						
+						 // Update the OGP meta tag for description
+                    				document.querySelector('meta[property="og:description"]').content = `Send a private message to "${userName}" and share your thoughts.`;
+						
 					} else {
 						// Handle the case where the username is not found
 						document.getElementById('message').placeholder = `Type your message to this user...`;
 						document.getElementById('userName').textContent = `Tell your opinion honestly`;
-						document.querySelector('meta[property="og:description"]').content = `You can use Aero Forms in few easy steps, docs and demos included. Source files are compatible with any back-end environment`;
+                    				document.querySelector('meta[property="og:description"]').content = `You can use Aero Forms in few easy steps, docs and demos included. Source files are compatible with any back-end environment`;
 
 					}
 				} else {
@@ -139,6 +134,7 @@ fetchUserIdByUsername(username)
 		console.error('Error:', error.message);
 		document.getElementById('message').placeholder = `Something went wrong...`;
 		document.getElementById('userName').textContent = `Tell your opinion honestly`;
+                document.querySelector('meta[property="og:description"]').content = `You can use Aero Forms in few easy steps, docs and demos included. Source files are compatible with any back-end environment`;
 
 		var submitButton = document.querySelector('button[type="submit"]');
 		if (submitButton) {
