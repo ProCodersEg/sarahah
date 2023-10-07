@@ -169,7 +169,7 @@ function saveMessage(name, message) {
 				name: name,
 				message: message,
 				timestamp: messageTimestamp, // Add the timestamp to the message data
-				new: true
+				isNew: true
 			};
 
 			// Add the message to Firestore
