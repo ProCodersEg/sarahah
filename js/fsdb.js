@@ -16,14 +16,22 @@ const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO8
 // Replace with your actual Firebase Cloud Messaging server key
 
 
-function getUserIdFromHash() {
-    var hash = window.location.hash.substring(1); // Remove the leading '#'
-    var params = new URLSearchParams(hash);
-    return params.get('user_id');
+// Function to get URL parameters
+function getURLParameter(name) {
+	name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+	var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+	var results = regex.exec(location.search);
+	return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-// Example usage
-var username = getUserIdFromHash();
+
+//function getURLParameter(name) {
+   // var params = new URLSearchParams(window.location.search);
+   // return params.get(name);
+//}
+
+// Fetch the user ID from the URL
+var username = getURLParameter('user_id');
 
 
 function getInputVal(id) {
