@@ -34,8 +34,8 @@ const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO8
   }
 
 // Fetch the user ID from the URL
-var username = getURLParameter('user_id');
-
+//var username = getURLParameter('user_id');
+var username = 'VvWNNTATShNG5cR2v47MG6q33Ys1';
 
 function getInputVal(id) {
 	return document.getElementById(id).value;
