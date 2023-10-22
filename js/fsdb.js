@@ -13,7 +13,8 @@ var firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = app.firestore();
 //const messaging = app.messaging();
-const messaging = app.messaging.isSupported() ? firebase.messaging() : null
+
+const messaging = app.messaging.isSupported() ? app.messaging() : null
 const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO86vrCEJ1sT-f6e8IS0zacaQ8_jYXVCxVLfUiOb8ZA9kvci4NA1kGl1f32Ybx--DCIhFL5itdZl7eWb-iX_nyxHhc3ktP";
 
 // Replace with your actual Firebase Cloud Messaging server key
