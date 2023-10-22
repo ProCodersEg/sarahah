@@ -9,7 +9,12 @@ var firebaseConfig = {
 };
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = app.firestore();
-const messaging = app.messaging();
+
+let messaging = null;
+if (app.messaging.isSupported()){
+    messaging = firebase.messaging();
+}
+//const messaging = app.messaging();
 
 
 
