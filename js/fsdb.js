@@ -9,10 +9,11 @@ var firebaseConfig = {
 };
 
 
-  if ('PushManager' in window && 'Notification' in window && 'serviceWorker' in navigator) {
+ // if ('PushManager' in window && 'Notification' in window && 'serviceWorker' in navigator) {
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = app.firestore();
-const messaging = app.messaging();
+//const messaging = app.messaging();
+const messaging = app.messaging.isSupported() ? firebase.messaging() : null
 const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO86vrCEJ1sT-f6e8IS0zacaQ8_jYXVCxVLfUiOb8ZA9kvci4NA1kGl1f32Ybx--DCIhFL5itdZl7eWb-iX_nyxHhc3ktP";
 
 // Replace with your actual Firebase Cloud Messaging server key
@@ -294,7 +295,7 @@ function sendNotification(notification) {
 }
 // end send notification
 
-} else {
-    // Provide a message for unsupported browsers
-    alert("Sorry, this website does not support your browser. Please use a modern browser for the best experience.");
-  }
+// } else {
+//     // Provide a message for unsupported browsers
+//     alert("Sorry, this website does not support your browser. Please use a modern browser for the best experience.");
+//   }
