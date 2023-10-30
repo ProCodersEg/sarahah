@@ -17,6 +17,17 @@
     display: block;
 }
 
+.circle-image {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto -35px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
 .sf-modal-wrapper{
     position: relative;
     display: flex;
@@ -149,12 +160,22 @@ form.aero-form label{
     margin-bottom: 15px;
 }
 
-.aero-form-header{
+.aero-form-header {
     margin-bottom: 30px;
+    margin-top: 20px;
     text-align: center;
     padding: 0 20px;
     font-size: 14px;
+    position: relative;
+    z-index: 0; /* Lower z-index to position it behind circle-image */
 }
+
+#bio {
+    color: #444444; /* Set text color to a green shade */
+    font-size: 13px; /* Set font size to 16 pixels */
+}
+
+
 .aero-form-header h2{
     margin-bottom: 10px!important;
 }
