@@ -455,3 +455,33 @@ a.social-btn img{
         transform: scale(1) translate(0%, 0%);
     }
 }
+
+header {
+    text-align: center;
+            background-color: #f3f3f3;
+            padding: 10px;
+            border-radius: 100px; /* Rounded corners */
+            margin: 10px 40px; /* Margin on left and right */
+       
+}
+
+.social-icons {
+    display: flex;
+	font-weight: bold;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icons p {
+    margin-right: 0px;
+}
+
+.icon {
+    margin: 0 10px;
+}
+
+.icon i {
+            font-size: 18px; /* Adjust the size of the icons */
+        }
+
