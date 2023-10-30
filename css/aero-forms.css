@@ -485,3 +485,12 @@ header {
             font-size: 18px; /* Adjust the size of the icons */
         }
 
+.c-Count {
+    display: flex;
+	font-family: 'Almarai', sans-serif;
+    font-size: 14px;
+	color: #000000;
+    align-items: center;
+    justify-content: center;
+}
+
