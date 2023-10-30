@@ -85,6 +85,7 @@ function fetchUserIdByUsername(username) {
     });
 }
 
+
 // Example usage:
 fetchUserIdByUsername(username)
     .then(function(userId) {
@@ -102,14 +103,37 @@ fetchUserIdByUsername(username)
             .then(function(doc) {
                 if (doc.exists) {
                     var userName = doc.data().name;
+					var bio = doc.data().status;
+					var profilePhoto = doc.data().photoUrl;
+					
+					if (profilePhoto) {
+						 var profilePhotoElement = document.getElementById('profilePhoto');
+							profilePhotoElement.src = `${profilePhoto}`;
+                    } else {
+                        // Handle the case where the username is not found
+                        document.getElementById('profilePhoto').style.display  = `none`;
+
+                    }
+					
+					
+					if (bio) {
+						var bioElement = document.getElementById('bio');
+							bioElement.innerHTML = `&ldquo;${bio}&rdquo;`;
+                    } else {
+                        // Handle the case where the username is not found
+                        document.getElementById('bio').textContent = ` Be Honest `;
+                    }
+					
                     if (userName) {
-                        // Update the textarea's placeholder with the retrieved username userName
-                        document.getElementById('message').placeholder = `Type your message to "${userName}" send privately here...`;
-                        document.getElementById('userName').textContent = `${userName}`;
+                        // Update the textarea's placeholder with the retrieved username
+						var messageElement = document.getElementById('message');
+						messageElement.placeholder = `Type your message to "${userName}" send privately here...`;
+						smoothAnimation(profilePhotoElement);
+						document.getElementById('userName').textContent = `${userName}`;
                     } else {
                         // Handle the case where the username is not found
                         document.getElementById('message').placeholder = `Type your message to this user...`;
-                        document.getElementById('userName').textContent = `Tell your opinion honestly`;
+                        document.getElementById('userName').textContent = ` Be Honest `;
                     }
                 } else {
                     // Handle the case where the user document is not found
@@ -123,7 +147,9 @@ fetchUserIdByUsername(username)
     .catch(function(error) {
         console.error('Error:', error.message);
         document.getElementById('message').placeholder = `Something went wrong...`;
-        document.getElementById('userName').textContent = `Tell your opinion honestly`;
+		 document.getElementById('bio').textContent = `Oops`;
+        document.getElementById('userName').textContent = ` Be Honest `;
+		document.getElementById('profilePhoto').style.display  = `none`;
 
         var submitButton = document.querySelector('button[type="submit"]');
         if (submitButton) {
