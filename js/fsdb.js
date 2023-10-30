@@ -127,9 +127,9 @@ fetchUserIdByUsername(username)
                     if (userName) {
                         // Update the textarea's placeholder with the retrieved username
 						var messageElement = document.getElementById('message');
+			    			var userNameElement = document.getElementById('userName');
 						messageElement.placeholder = `Type your message to "${userName}" send privately here...`;
-						smoothAnimation(profilePhotoElement);
-						document.getElementById('userName').textContent = `${userName}`;
+						userNameElement.textContent = `${userName}`;
                     } else {
                         // Handle the case where the username is not found
                         document.getElementById('message').placeholder = `Type your message to this user...`;
