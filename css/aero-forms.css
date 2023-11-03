@@ -534,8 +534,10 @@ body {
 
 /* Header styles */
     .header {
+	top: 0;
+	width: 100%;
       background-color: #f3f3f3;
-      color: transparent;
+      color: #f3f3f3;
       padding: .5em 1em;
 		display: flex;
       justify-content: space-between;
