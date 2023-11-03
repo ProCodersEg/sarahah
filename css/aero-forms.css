@@ -535,23 +535,24 @@ body {
 /* Header styles */
     .header {
       background-color: #f3f3f3;
-      color: #f3f3f3;
-      padding: 5px 20px; /* Add padding to the left and right */
-      display: flex;
+      color: transparent;
+      padding: .5em 1em;
+		display: flex;
       justify-content: space-between;
-      align-items: center;	  
-    }
+      align-items: center;
+	  }
 
     /* Logo or Name styles */
     .logo-image {
       font-size: 20px;
-	width: 50px; /* Adjust the width as needed */
+	  width: 50px; /* Adjust the width as needed */
       height: auto; /* Preserve aspect ratio */
     }
 
     /* Social icons styles */
     .social-icons {
       font-size: 20px;
+	  align-items: center;
     }
 
     .social-icons a {
