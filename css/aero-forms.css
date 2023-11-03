@@ -456,35 +456,6 @@ a.social-btn img{
     }
 }
 
-header {
-    text-align: center;
-            background-color: #f3f3f3;
-            padding: 10px;
-            border-radius: 100px; /* Rounded corners */
-            margin: 10px 40px; /* Margin on left and right */
-       
-}
-
-.social-icons {
-    display: flex;
-	font-weight: bold;
-    font-size: 14px;
-    align-items: center;
-    justify-content: center;
-}
-
-.social-icons p {
-    margin-right: 0px;
-}
-
-.icon {
-    margin: 0 10px;
-}
-
-.icon i {
-            font-size: 16px; /* Adjust the size of the icons */
-	color: #000000;
-        }
 
 .c-Count {
     display: flex;
@@ -494,4 +465,70 @@ header {
     align-items: center;
     justify-content: center;
 }
+
+/*footer code*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI';
+  font-weight: 400;
+  background-color: #ededed;
+}
+.footer {
+  padding: 40px 0;
+  background-color: #ffffff;
+}
+.footer .social {
+  text-align: center;
+  padding-bottom: 25px;
+  color: #4b4c4d;
+}
+.footer .social a {
+  font-size: 24px;
+  color: inherit;
+  border: 1px solid #ccc;
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%;
+  margin: 0 8px;
+  opacity: 0.75;
+}
+.footer .social a:hover {
+  opacity: 0.9;
+}
+.footer ul {
+  margin-top: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+.footer ul a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+}
+.footer ul li {
+  display: inline-block;
+  padding: 0 15px;
+}
+.footer ul a:hover {
+  opacity: 1;
+}
+.footer .copyright {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+}
+
+ /*end*/
 
