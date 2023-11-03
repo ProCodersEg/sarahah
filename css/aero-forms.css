@@ -532,43 +532,30 @@ body {
 
  /*end*/
 
-/* Reset some default styles */
-  body, h1, h2, p, ul, li {
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Define styles for the header */
-  header {
-    background-color: #f3f3f3; /* Header background color */
-    color: #000; /* Text color */
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Box shadow for header */
-  }
-
-  /* Style for the logo image */
-  .logo img {
-    height: 40px; /* Set the desired height of the logo */
-    margin-right: 10px; /* Spacing between the logo and site name */
-  }
-
-  /* Style for the site name */
-  .site-name {
-    font-size: 18px; /* Adjust the font size as needed */
-	  font-family: 'Almarai', sans-serif;
-  }
-
-  /* Media query for smaller screens (e.g., mobile devices) */
-  @media screen and (max-width: 768px) {
-    header {
-      flex-direction: column; /* Change to a vertical layout */
-      text-align: center; /* Center-align content */
-      padding: 20px; /* Increase padding for better spacing */
+	/* Header styles */
+    .header {
+      background-color: #f3f3f3;
+      color: #fff;
+      padding: 10px 30px; /* Add padding to the left and right */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .logo img {
-      margin: 0 0 10px; /* Add some spacing below the logo on smaller screens */
+    /* Logo or Name styles */
+    .logo-image {
+      font-size: 20px;
+	  width: 50px; /* Adjust the width as needed */
+      height: auto; /* Preserve aspect ratio */
     }
-  }
+
+    /* Social icons styles */
+    .social-icons {
+      font-size: 20px;
+    }
+
+    .social-icons a {
+      color: #000;
+      text-decoration: none;
+      margin-left: 15px; /* Add spacing between social icons */
+    }
