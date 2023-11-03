@@ -535,11 +535,11 @@ body {
 	/* Header styles */
     .header {
       background-color: #f3f3f3;
-      color: #fff;
+      color: #f3f3f3;
       padding: 10px 30px; /* Add padding to the left and right */
       display: flex;
       justify-content: space-between;
-      align-items: center;
+
     }
 
     /* Logo or Name styles */
