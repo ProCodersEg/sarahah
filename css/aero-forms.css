@@ -537,11 +537,11 @@ body {
     margin: 0;
     padding: 0;
   }
-  
-/* Define styles for the header */
+
+  /* Define styles for the header */
   header {
-    background-color: #f3f3f3; /* Header background color */
-    color: #000; /* Text color */
+    background-color: #333; /* Header background color */
+    color: #fff; /* Text color */
     display: flex;
     align-items: center;
     padding: 10px 20px;
@@ -556,6 +556,19 @@ body {
 
   /* Style for the site name */
   .site-name {
-    font-size: 17px; /* Adjust the font size as needed */
-	font-family: 'Almarai', sans-serif;
+    font-size: 18px; /* Adjust the font size as needed */
+	  font-family: 'Almarai', sans-serif;
+  }
+
+  /* Media query for smaller screens (e.g., mobile devices) */
+  @media screen and (max-width: 768px) {
+    header {
+      flex-direction: column; /* Change to a vertical layout */
+      text-align: center; /* Center-align content */
+      padding: 20px; /* Increase padding for better spacing */
+    }
+
+    .logo img {
+      margin: 0 0 10px; /* Add some spacing below the logo on smaller screens */
+    }
   }
