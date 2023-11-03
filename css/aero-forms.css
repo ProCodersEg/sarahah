@@ -540,8 +540,8 @@ body {
 
   /* Define styles for the header */
   header {
-    background-color: #333; /* Header background color */
-    color: #fff; /* Text color */
+    background-color: #f3f3f3; /* Header background color */
+    color: #000; /* Text color */
     display: flex;
     align-items: center;
     padding: 10px 20px;
