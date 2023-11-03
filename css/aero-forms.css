@@ -532,14 +532,15 @@ body {
 
  /*end*/
 
+
 	/* Header styles */
     .header {
       background-color: #f3f3f3;
-      color: #f3f3f3;
+      color: #fff;
       padding: 10px 30px; /* Add padding to the left and right */
       display: flex;
       justify-content: space-between;
-
+      align-items: center;
     }
 
     /* Logo or Name styles */
@@ -552,6 +553,7 @@ body {
     /* Social icons styles */
     .social-icons {
       font-size: 20px;
+	  align-items: center;
     }
 
     .social-icons a {
