@@ -730,3 +730,7 @@ body {
 		.bee-row-2 .bee-col-1 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
 			margin-right: 0
 		}
+		
+		.colored-icon {
+    color: #00a4e5; /* Change the color to the desired color (e.g., blue) */
+}
