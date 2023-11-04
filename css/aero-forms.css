@@ -112,10 +112,13 @@ form.aero-form.transparent{
 }
 form.aero-form.form-shadow{
     box-shadow: rgba(68,96,241, 0.1) 0 15px 30px 5px;
+
 }
 
 form.aero-form.white{
-    background: rgba(229 229 229);
+    background: rgb(243, 243, 243);
+	    border: 1px solid #000; /* Add a border (2px width, gray color) */
+
 }
 
 form.aero-form input[type=text],
