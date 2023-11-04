@@ -531,3 +531,17 @@ body {
 }
 
  /*end*/
+
+header {
+    background-color: #f3f3f3; /* Optional background color for the header */
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.logo img {
+    width: 50px; /* Set the desired width for your logo */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Optional spacing between logo and navigation */
+}
