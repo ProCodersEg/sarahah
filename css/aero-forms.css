@@ -846,13 +846,16 @@ body {
 
 		.bee-row-1 .bee-row-content {
 			background-size: auto;
+			    margin-top: 40px;
+				margin-bottom: 40px;
 			color: #000
+			
 		}
 
 		.bee-row-1 .bee-col-1,
 		.bee-row-1 .bee-col-2 {
-			padding-bottom: 30px;
-			padding-top: 30px;
+			padding-bottom: 10px;
+			padding-top: 5px;
 			display: flex;
 			flex-direction: column;
 			background-color: #f3f3f3;
