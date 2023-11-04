@@ -60,7 +60,7 @@ body{
 body {
     position: relative;
     width: 100%;
-    background: #ffffff;
+    background: #f3f3f3;
     font-size: 15px;
     color: #211818;
     line-height: 1.6;
@@ -369,7 +369,6 @@ h5, h6{
     background: url(../images/1x/bg4.png) 50% 100% no-repeat;
     background-size: 500px;
 }
-
 
 .copy{
     font-size: 13px;
