@@ -739,7 +739,7 @@ body {
 .separator {
     border-top: 1px solid #ccc; /* Add a horizontal line with desired color and thickness */
     margin: 0px 0px; /* Add vertical spacing above and below the separator */
-	margin-bottom: 60px;
+	margin-bottom: 0px;
 }
 
 .bee-row,
@@ -852,7 +852,7 @@ body {
 		.bee-row-1 .bee-col-1,
 		.bee-row-1 .bee-col-2 {
 			padding-bottom: 30px;
-			padding-top: 5px;
+			padding-top: 30px;
 			display: flex;
 			flex-direction: column;
 			background-color: #f3f3f3;
