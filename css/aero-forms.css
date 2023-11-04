@@ -622,7 +622,8 @@ body {
 
 		.bee-image img {
 			display: block;
-			width: 100%
+			width: 100px;
+			height: auto;
 		}
 
 		.bee-social .icon img {
