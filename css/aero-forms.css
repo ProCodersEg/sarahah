@@ -531,34 +531,3 @@ body {
 }
 
  /*end*/
-
-/* Header styles */
-    .header {
-	top: 0;
-	width: 100%;
-      background-color: #f3f3f3;
-      color: #f3f3f3;
-      padding: .5em 1em;
-		display: flex;
-      justify-content: space-between;
-      align-items: center;
-	  }
-
-    /* Logo or Name styles */
-    .logo-image {
-      font-size: 20px;
-	  width: 50px; /* Adjust the width as needed */
-      height: auto; /* Preserve aspect ratio */
-    }
-
-    /* Social icons styles */
-    .social-icons {
-      font-size: 20px;
-	  align-items: center;
-    }
-
-    .social-icons a {
-      color: #000;
-      text-decoration: none;
-      margin-left: 15px; /* Add spacing between social icons */
-    }
