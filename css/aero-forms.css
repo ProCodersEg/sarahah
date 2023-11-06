@@ -741,16 +741,7 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff; /* Optional background color for the banner */
-    padding: 3px; /* Optional padding for the banner */
-}
-
-.c-Count {
-    display: flex;
-	font-family: 'Almarai', sans-serif;
-    font-size: 14px;
-	color: #000000;
-    align-items: center;
-    justify-content: center;
+     /*padding: 3px; Optional padding for the banner */
 }
 
 .text-with-icon {
@@ -760,8 +751,19 @@ body {
 	color: #000000;
     align-items: center;
     justify-content: center;
-	margin-right: 5px;
+	margin-right: 10px;
 }
+
+.c-Count {
+    display: flex;
+	font-family: 'Almarai', sans-serif;
+    font-size: 14px;
+	color: #000000;
+    align-items: center;
+    justify-content: center; /* Align to the left */
+
+}
+
 
 .icon {
     font-size: 15px;
