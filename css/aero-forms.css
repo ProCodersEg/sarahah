@@ -747,7 +747,7 @@ body {
 .text-with-icon {
     display: flex;
 	font-family: 'Almarai', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
 	color: #000000;
     align-items: center;
     justify-content: center;
@@ -766,14 +766,14 @@ body {
 
 
 .icon {
-    font-size: 15px;
+    font-size: 12px;
     margin-right: 5px;
 	color: #02AABD
 
 }
 
 .text {
-    font-size: 12px;
+    font-size: 10px;
 	font-family: 'Almarai', sans-serif;
 
 }
