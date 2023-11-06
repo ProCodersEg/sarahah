@@ -740,7 +740,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ffffff; /* Optional background color for the banner */
      /*padding: 3px; Optional padding for the banner */
 }
 
