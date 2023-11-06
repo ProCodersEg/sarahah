@@ -532,201 +532,43 @@ body {
 
  /*end*/
  
-	
-.bee-row,
-		.bee-row-content {
-			position: relative
-		}
 
-		.bee-row-1 .bee-row-content,
-		.bee-row-2,
-		.bee-row-2 .bee-row-content {
-			background-color: #ffffff;
-			background-repeat: no-repeat
-		}
+header {
+      background-color: #f3f3f3;
+      color: #fff;
+      padding: 10px 0;
+    }
 
-		.bee-row-1,
-		.bee-row-1 .bee-row-content,
-		.bee-row-2,
-		.bee-row-2 .bee-row-content {
-			background-repeat: no-repeat
-		}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-		body {
-			background-color: #cbdee9;
-			color: #000;
-			font-family: Arial, Helvetica Neue, Helvetica, sans-serif
-		}
+    .my-logo img {
+		width: 100px;
+         max-height: auto;
+	     border-radius: 0; /* Set border-radius to 0 to make it have straight corners */
 
-		a {
-			color: #0068a5
-		}
+    }
 
-		* {
-			box-sizing: border-box
-		}
+    .social-icons a {
+      color: #000;
+      text-decoration: none;
+      margin-left: 10px;
+      font-size: 20px;
+    }
 
-		body {
-			margin: 0
-		}
+    .social-icons i {
+      font-size: 18px;
+    }
 
-		.bee-row-content {
-			max-width: 1025px;
-			margin: 0 auto;
-			display: flex
-		}
-
-		.bee-row-content .bee-col-w3 {
-			flex-basis: 25%
-		}
-
-		.bee-row-content .bee-col-w4 {
-			flex-basis: 35%
-		}
-
-		.bee-row-content .bee-col-w5 {
-			flex-basis: 50%
-		}
-
-		.bee-row-content .bee-col-w12 {
-			flex-basis: 100%
-		}
-
-		.bee-icon .bee-icon-label-right a {
-			text-decoration: none
-		}
-
-		.bee-divider,
-		.bee-image {
-			overflow: auto
-		}
-
-		.bee-image .bee-center {
-			margin: 0 auto
-		}
-
-		.bee-icon {
-			display: inline-block;
-			vertical-align: middle
-		}
-
-		.bee-icon .bee-content {
-			display: flex;
-			align-items: center
-		}
-
-		.bee-image img {
-			display: block;
-			width: 100px;
-			height: auto;
-		}
-
-		.bee-social .icon img {
-			max-height: 32px
-		}
-
-		.bee-row-1 {
-			background-size: auto
-		}
-
-		.bee-row-1 .bee-row-content {
-			background-size: auto;
-			border-radius: 0;
-			color: #f3f3f3
-		}
-
-		.bee-row-1 .bee-col-1 {
-			padding-bottom: 15px;
-			display: flex;
-			flex-direction: column;
-			background-color: #f3f3f3;
-			justify-content: center
-			
-		}
-
-		.bee-row-1 .bee-col-1 .bee-block-1 {
-			padding-top: 10px;
-			width: 100%
-			
-		}
-
-		.bee-row-1 .bee-col-2 {
-			display: flex;
-			flex-direction: column;
-			background-color: #f3f3f3;
-			justify-content: center
-		}
-
-		.bee-row-1 .bee-col-3 {
-			padding-bottom: 5px;
-			padding-top: 5px;
-			display: flex;
-			background-color: #f3f3f3;
-			flex-direction: column;
-			justify-content: center
-		}
-
-		.bee-row-1 .bee-col-3 .bee-block-1 {
-			padding: 10px;
-			text-align: right
-		}
-
-		.bee-row-2 .bee-col-1,
-		.bee-row-2 .bee-col-1 .bee-block-1 {
-			padding-bottom: 5px;
-			padding-top: 5px
-		}
-
-		.bee-row-2 .bee-row-content {
-			color: #000
-		}
-
-		.bee-row-2 .bee-col-1 .bee-block-1 {
-			color: #1e0e4b;
-			font-family: Inter, sans-serif;
-			font-size: 15px;
-			text-align: center
-		}
-
-		@media (max-width:768px) {
-			.bee-mobile_hide {
-				display: none
-			}
-
-			.bee-row-content:not(.no_stack) {
-				display: block
-			}
-
-			.bee-row-1 .bee-col-1,
-			.bee-row-1 .bee-col-1 .bee-block-1 {
-				padding: 10px !important
-			}
-
-			.bee-row-1 .bee-col-3 .bee-block-1 {
-				text-align: center !important
-			}
-
-			.bee-row-1 .bee-col-2 .bee-block-1 {
-				padding: 0 !important
-			}
-
-			.bee-row-1 .bee-col-1 .bee-block-1 img {
-				float: none !important;
-				margin: 0 auto !important
-			}
-		}
-
-		.bee-row-2 .bee-col-1 .bee-block-1 .bee-icon-image {
-			padding: 5px 6px 5px 5px
-		}
-
-		.bee-row-2 .bee-col-1 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content {
-			margin-left: 0
-		}
-
-		.bee-row-2 .bee-col-1 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
-			margin-right: 0
-		}
+    .social-icons a:hover {
+      color: #00CDAC;
+    }
 		
 		.colored-icon {
     color: #000000; /* Change the color to the desired color (e.g., blue) */
