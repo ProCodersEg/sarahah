@@ -86,6 +86,49 @@ function fetchUserIdByUsername(username) {
 }
 
 
+// Initialize Firestore
+var db = firebase.firestore();
+// Function to increment or create the visits field
+function incrementVisitsCount(userId) {
+    var userDocRef = db.collection('users').doc(userId);
+
+    // Check if the document exists
+    userDocRef.get()
+        .then(function(doc) {
+            if (doc.exists) {
+                // Document exists, update the visits field
+                var existingVisits = doc.data().visitsCount || 0;
+                userDocRef.update({
+                    visitsCount: existingVisits + 1
+                })
+                .then(function() {
+                    // Visits field updated successfully
+                    console.log('Visits updated successfully');
+                })
+                .catch(function(error) {
+                    console.error("Error updating visits:", error);
+                });
+            } else {
+                // Document doesn't exist, create it with visits field
+                userDocRef.set({
+                    visitsCount: 1
+                })
+                .then(function() {
+                    // Document and visits field created successfully
+                    console.log('Document and visits field created successfully');
+                })
+                .catch(function(error) {
+                    console.error("Error creating document and visits field:", error);
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error("Error checking document existence:", error);
+        });
+}
+
+
+
 // Example usage:
 fetchUserIdByUsername(username)
     .then(function(userId) {
@@ -105,6 +148,16 @@ fetchUserIdByUsername(username)
                     var userName = doc.data().name;
 					var bio = doc.data().status;
 					var profilePhoto = doc.data().photoUrl;
+					
+					var visitsCount = doc.data().visitsCount || 0; // Initialize to 0 if not present
+
+					// Update the visitsCount field in your HTML
+					document.getElementById('visits').textContent = `Visits : ${visitsCount}`;
+
+					// ... rest of your code for displaying user information
+
+					// Call the function with the user's userId
+					incrementVisitsCount(userId);
 					
 					if (profilePhoto) {
 						 var profilePhotoElement = document.getElementById('profilePhoto');
@@ -127,9 +180,8 @@ fetchUserIdByUsername(username)
                     if (userName) {
                         // Update the textarea's placeholder with the retrieved username
 						var messageElement = document.getElementById('message');
-			    			var userNameElement = document.getElementById('userName');
 						messageElement.placeholder = `Type your message to "${userName}" send privately here...`;
-						userNameElement.textContent = `${userName}`;
+						document.getElementById('userName').textContent = `${userName}`;
                     } else {
                         // Handle the case where the username is not found
                         document.getElementById('message').placeholder = `Type your message to this user...`;
@@ -225,7 +277,7 @@ function updateCharacterCount() {
     var charCount = document.getElementById('char-count');
     var maxLength = 500;
     var remainingChars = maxLength - textarea.value.length;
-    charCount.textContent = 'Characters remaining: ' + remainingChars;
+    charCount.textContent = 'Max : ' + remainingChars;
 }
 
 // Function to show the success toast message
@@ -257,33 +309,33 @@ function sendNotificationToUser(userId) {
 
     // Fetch the user's FCM token and notificationsOn status from Firestore
     usersCollection.doc(userId).get()
-        .then(function(doc) {
-            if (doc.exists) {
-                var userFCMToken = doc.data().token;
-                var notificationsOn = doc.data().notificationsOn;
+  .then(function(doc) {
+    if (doc.exists) {
+      var userFCMToken = doc.data().token;
+      var notificationsOn = doc.data().notificationsOn;
 
-                if (notificationsOn === true && userFCMToken) {
-                    // Create the notification object
-                    const notification = {
-                        to: userFCMToken, // FCM token from Firestore
-                        notification: {
-                            title: "New Message",
-                            body: "You have a new message from a friend!",
-                        },
-                    };
-                    sendNotification(notification);
-                } else {
-                    // Handle the case where notifications are turned off or FCM token is not found
-                    console.log("Notifications are turned off for the user or FCM token not found.");
-                }
-            } else {
-                // Handle the case where the user document does not exist in Firestore
-                console.error("User document not found in Firestore");
-            }
-        })
-        .catch(function(error) {
-            console.error("Error fetching user document:", error);
-        });
+      if (notificationsOn === true && userFCMToken) {
+        // Create the notification object with custom vibration
+        const notification = {
+          to: userFCMToken, // FCM token from Firestore
+          notification: {
+            title: "New Message",
+            body: "You have a new message from a friend!",
+          },
+        };
+        sendNotification(notification);
+      } else {
+        // Handle the case where notifications are turned off or FCM token is not found
+        console.log("Notifications are turned off for the user or FCM token not found.");
+      }
+    } else {
+      // Handle the case where the user document does not exist in Firestore
+      console.error("User document not found in Firestore");
+    }
+  })
+  .catch(function(error) {
+    console.error("Error fetching user document:", error);
+  });
 }
 
 
