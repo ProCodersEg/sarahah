@@ -464,6 +464,7 @@ a.social-btn img{
 }
 
 
+
  /*footer code*/
 * {
   margin: 0;
@@ -474,6 +475,7 @@ body {
   font-family: 'Segoe UI';
   font-weight: 400;
   background-color: #ededed;
+
 }
 .footer {
   padding: 40px 0;
@@ -578,12 +580,9 @@ body {
 			flex-basis: 25%
 		}
 
-		.bee-row-content .bee-col-w4 {
-			flex-basis: 33%
-		}
 
 		.bee-row-content .bee-col-w5 {
-			flex-basis: 42%
+			flex-basis: 75%
 		}
 
 		.bee-row-content .bee-col-w12 {
@@ -736,6 +735,7 @@ body {
 	margin-bottom: 0px;
 }
 
+
 .banner {
     display: flex;
     justify-content: space-between;
@@ -776,3 +776,4 @@ body {
 	font-family: 'Almarai', sans-serif;
 
 }
+
