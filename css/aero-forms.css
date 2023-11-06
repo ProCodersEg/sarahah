@@ -464,16 +464,6 @@ a.social-btn img{
 }
 
 
-
-.c-Count {
-    display: flex;
-	font-family: 'Almarai', sans-serif;
-    font-size: 14px;
-	color: #000000;
-    align-items: center;
-    justify-content: center;
-}
-
  /*footer code*/
 * {
   margin: 0;
@@ -744,4 +734,44 @@ body {
     border-top: 1px solid #ccc; /* Add a horizontal line with desired color and thickness */
     margin: 0px 0px; /* Add vertical spacing above and below the separator */
 	margin-bottom: 0px;
+}
+
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Optional background color for the banner */
+    padding: 3px; /* Optional padding for the banner */
+}
+
+.c-Count {
+    display: flex;
+	font-family: 'Almarai', sans-serif;
+    font-size: 14px;
+	color: #000000;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-with-icon {
+    display: flex;
+	font-family: 'Almarai', sans-serif;
+    font-size: 14px;
+	color: #000000;
+    align-items: center;
+    justify-content: center;
+	margin-right: 5px;
+}
+
+.icon {
+    font-size: 15px;
+    margin-right: 5px;
+	color: #02AABD
+
+}
+
+.text {
+    font-size: 12px;
+	font-family: 'Almarai', sans-serif;
+
 }
