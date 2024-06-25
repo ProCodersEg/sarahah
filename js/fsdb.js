@@ -276,7 +276,9 @@ function sendNotificationToUser(userId) {
                             priority: "high",
                             notification: {
                                 channel_id: "channel_id",
-                                sound: "default"
+                                sound: "default",
+				icon: "icon", // Use the correct small icon name
+
                             }
                         }
                     };
