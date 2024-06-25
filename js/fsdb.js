@@ -139,6 +139,12 @@ fetchUserIdByUsername(username)
                         profilePhotoElement.style.display = 'none';
                     }
 
+                    var visitsCount = doc.data().visitsCount || 0; // Initialize to 0 if not present
+					// Update the visitsCount field in your HTML
+					document.getElementById('visits').textContent = `Visits : ${visitsCount}`;
+					// Call the function with the user's userId
+					incrementVisitsCount(userId);
+
                     const bioElement = document.getElementById('bio');
                     if (bio) {
                         bioElement.innerHTML = `&ldquo;${bio}&rdquo;`;
