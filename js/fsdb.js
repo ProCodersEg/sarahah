@@ -69,7 +69,7 @@ function fetchUserIdByUsername(username) {
                 if (!querySnapshot.empty) {
                     const doc = querySnapshot.docs[0];
                     const userId = doc.id;
-                    console.log('User ID for username', username, 'is', userId);
+                    //console.log('User ID for username', username, 'is', userId);
                     resolve(userId);
                 } else {
                     reject(new Error('User not found'));
@@ -161,7 +161,7 @@ function saveMessage(name, message) {
 
             userMessagesCollection.add(messageData)
                 .then(docRef => {
-                    console.log("Message saved successfully with ID: ", docRef.id);
+                   // console.log("Message saved successfully with ID: ", docRef.id);
 
                     const loadingDialog = document.getElementById('loading-dialog');
                     if (loadingDialog) {
@@ -254,7 +254,8 @@ function sendNotification(notification) {
     fetch("https://fcm.googleapis.com/fcm/send", options)
         .then(response => response.json())
         .then(data => {
-            console.log("Successfully sent notification:", data);
+            //console.log("Successfully sent notification:", data);
+            console.log("Successfully sent");
         })
         .catch(error => {
             console.error("Error sending notification:", error);
