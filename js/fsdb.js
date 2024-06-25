@@ -82,6 +82,46 @@ function fetchUserIdByUsername(username) {
     });
 }
 
+// Function to increment or create the visits field
+function incrementVisitsCount(userId) {
+    var userDocRef = firestore.collection('users').doc(userId);
+
+    // Check if the document exists
+    userDocRef.get()
+        .then(function(doc) {
+            if (doc.exists) {
+                // Document exists, update the visits field
+                var existingVisits = doc.data().visitsCount || 0;
+                userDocRef.update({
+                    visitsCount: existingVisits + 1
+                })
+                .then(function() {
+                    // Visits field updated successfully
+                    console.log('Visits updated successfully');
+                })
+                .catch(function(error) {
+                    console.error("Error updating visits:", error);
+                });
+            } else {
+                // Document doesn't exist, create it with visits field
+                userDocRef.set({
+                    visitsCount: 1
+                })
+                .then(function() {
+                    // Document and visits field created successfully
+                    console.log('Document and visits field created successfully');
+                })
+                .catch(function(error) {
+                    console.error("Error creating document and visits field:", error);
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error("Error checking document existence:", error);
+        });
+}
+
+
 // Fetch and display user details
 fetchUserIdByUsername(username)
     .then(userId => {
