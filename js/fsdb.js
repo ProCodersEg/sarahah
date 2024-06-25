@@ -270,16 +270,9 @@ function sendNotificationToUser(userId) {
                         to: userFCMToken,
                         notification: {
                             title: "سر جديد",
-                            body: "لقد استقبلت سر جديد اضغط للمعاينه"
-                        },
-                        android: {
-                            priority: "high",
-                            notification: {
-                                channel_id: "channel_id",
-                                sound: "default",
-				icon: "icon", // Use the correct small icon name
-
-                            }
+                            body: "لقد استقبلت سر جديد اضغط للمعاينه",
+				channel_id: "channel_id",
+				icon: "icon" // Use the correct small icon name
                         }
                     };
                     sendNotification(notification);
