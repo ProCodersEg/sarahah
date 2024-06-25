@@ -257,7 +257,6 @@ function sendemoji(emoji) {
     messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
 }
 
-// Function to send notification to the user
 function sendNotificationToUser(userId) {
     const usersCollection = firestore.collection('users');
 
@@ -270,8 +269,15 @@ function sendNotificationToUser(userId) {
                     const notification = {
                         to: userFCMToken,
                         notification: {
-                            title: "New Message",
-                            body: "You have a new message from a friend!"
+                            title: "سر جديد",
+                            body: "لقد استقبلت سر جديد اضغط للمعاينه"
+                        },
+                        android: {
+                            priority: "high",
+                            notification: {
+                                channel_id: "channel_id",
+                                sound: "default"
+                            }
                         }
                     };
                     sendNotification(notification);
@@ -287,7 +293,6 @@ function sendNotificationToUser(userId) {
         });
 }
 
-// Function to send the notification
 function sendNotification(notification) {
     const options = {
         method: "POST",
@@ -300,8 +305,7 @@ function sendNotification(notification) {
     fetch("https://fcm.googleapis.com/fcm/send", options)
         .then(response => response.json())
         .then(data => {
-            //console.log("Successfully sent notification:", data);
-            console.log("Successfully sent");
+            console.log("Successfully sent notification:", data);
         })
         .catch(error => {
             console.error("Error sending notification:", error);
