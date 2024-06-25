@@ -258,42 +258,41 @@ function sendemoji(emoji) {
 }
 
 function sendNotificationToUser(userId) {
-    const usersCollection = firestore.collection('users');
+  const usersCollection = firestore.collection('users');
 
-    usersCollection.doc(userId).get()
-        .then(doc => {
-            if (doc.exists) {
-                const { token: userFCMToken, notificationsOn } = doc.data();
+  usersCollection.doc(userId).get()
+    .then(doc => {
+      if (doc.exists) {
+        const { token: userFCMToken, notificationsOn } = doc.data();
 
-                if (notificationsOn === true && userFCMToken) {
-                    const notification = {
-                        to: userFCMToken,
-                        notification: {
-                            title: "سر جديد",
-                            body: "لقد استقبلت سر جديد اضغط للمعاينه",
-				channel_id: "channel_id",
-				default_vibrate_timings: false,
-				    vibrate_timings: [
-				                "0.0s",
-				                "0.2s",
-				                "0.1s",
-				                "0.2s"
-				     ],
-				icon: "icon" // Use the correct small icon name
-                        }
-                    };
-                    sendNotification(notification);
-                } else {
-                    console.log("Notifications are turned off for the user or FCM token not found.");
-                }
-            } else {
-                console.error("User document not found in Firestore");
+        if (notificationsOn === true && userFCMToken) {
+          const notification = {
+            to: userFCMToken,
+            notification: {
+              title: "سر جديد",
+              body: "لقد استقبلت سر جديد اضغط للمعاينه",
+              channel_id: "channel_id",
+              icon: "icon", // Use the correct small icon name
+              largeIcon: "icon" // Add large icon name here
+            },
+            android: { // Add Android-specific notification options
+              priority: "high", // Set notification priority (optional)
+              vibrate: true // Enable vibration
             }
-        })
-        .catch(error => {
-            console.error("Error fetching user document:", error);
-        });
+          };
+          sendNotification(notification);
+        } else {
+          console.log("Notifications are turned off for the user or FCM token not found.");
+        }
+      } else {
+        console.error("User document not found in Firestore");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching user document:", error);
+    });
 }
+
 
 function sendNotification(notification) {
     const options = {
