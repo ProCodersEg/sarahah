@@ -272,14 +272,9 @@ function sendNotificationToUser(userId) {
               title: "سر جديد",
               body: "لقد استقبلت سر جديد اضغط للمعاينه",
               channel_id: "channel_id",
-              icon: "icon" // Use the correct small icon name
-              //image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp", // URL to the large icon
+              icon: "icon", // Use the correct small icon name
+              image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
             },
-		  android: {
-              notification: {
-                largeIcon: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
-              }
-            }
           };
           sendNotification(notification);
         } else {
