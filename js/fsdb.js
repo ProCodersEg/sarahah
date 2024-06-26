@@ -273,10 +273,8 @@ function sendNotificationToUser(userId) {
               body: "لقد استقبلت سر جديد اضغط للمعاينه",
               channel_id: "channel_id",
               icon: "icon", // Use the correct small icon name
-              largeIcon: "icon",
-		priority: "high", // Set notification priority (optional)
-              vibrate: true, // Enable vibration
-		vibrationPattern: [1000, 500, 1000, 500]// Add large icon name here
+              vibrate: [1000, 500, 1000], // Example vibration pattern
+              image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
             },
           };
           sendNotification(notification);
@@ -291,6 +289,7 @@ function sendNotificationToUser(userId) {
       console.error("Error fetching user document:", error);
     });
 }
+
 
 
 function sendNotification(notification) {
