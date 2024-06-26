@@ -277,7 +277,8 @@ function sendNotificationToUser(userId) {
             },
             android: { // Add Android-specific notification options
               priority: "high", // Set notification priority (optional)
-              vibrate: true // Enable vibration
+              vibrate: true, // Enable vibration
+		vibrationPattern: [1000, 500, 1000, 500]
             }
           };
           sendNotification(notification);
