@@ -11,7 +11,6 @@ var firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = app.firestore();
-const auth = app.auth();
 
 let messaging;
 if (firebase.messaging.isSupported()) {
@@ -21,17 +20,26 @@ if (firebase.messaging.isSupported()) {
 // Replace with your actual Firebase Cloud Messaging server key
 const serverKey = "AAAA21juT4Y:APA91bEUomQIsA6OcAaQI8lxcstgH4RMVrLyD4vgoU_lTqrO86vrCEJ1sT-f6e8IS0zacaQ8_jYXVCxVLfUiOb8ZA9kvci4NA1kGl1f32Ybx--DCIhFL5itdZl7eWb-iX_nyxHhc3ktP";
 
+
 // Function to get URL parameter
 function getURLParameter(name) {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
 }
 
+// Fetch the user ID from the URL
+const username = getURLParameter('id');
+
+// Function to get input value by ID
+function getInputVal(id) {
+    return document.getElementById(id).value;
+}
+
 // Event listener for form submission
 document.getElementById('contact-form').addEventListener('submit', submitForm);
 
 // Function to handle form submission
-async function submitForm(e) {
+function submitForm(e) {
     e.preventDefault();
 
     const name = getInputVal('name');
@@ -46,123 +54,177 @@ async function submitForm(e) {
         loadingDialog.style.display = 'block';
     }
 
-    try {
-        // Save the message
-        await saveMessage(name, message);
-    } catch (error) {
-        console.error('Error saving message:', error);
-        // Handle error: show error message, log, etc.
-    } finally {
-        if (loadingDialog) {
-            loadingDialog.style.display = 'none';
-        }
-    }
+    // Delay for demonstration purposes
+    setTimeout(() => {
+        saveMessage(name, message);
+    }, 4000);
 }
 
 // Function to fetch user ID by username
-async function fetchUserIdByUsername(username) {
-    try {
+function fetchUserIdByUsername(username) {
+    return new Promise((resolve, reject) => {
         const usersCollection = firestore.collection('users');
-        const querySnapshot = await usersCollection.where('username', '==', username).limit(1).get();
-        if (!querySnapshot.empty) {
-            const doc = querySnapshot.docs[0];
-            const userId = doc.id;
-            return userId;
-        } else {
-            throw new Error('User not found');
-        }
-    } catch (error) {
-        console.error('Error fetching user document:', error);
-        throw error;
-    }
+        usersCollection.where('username', '==', username).limit(1).get()
+            .then(querySnapshot => {
+                if (!querySnapshot.empty) {
+                    const doc = querySnapshot.docs[0];
+                    const userId = doc.id;
+                    //console.log('User ID for username', username, 'is', userId);
+                    resolve(userId);
+                } else {
+                    reject(new Error('User not found'));
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user document:', error);
+                reject(error);
+            });
+    });
 }
 
-// Function to save the message in Firestore
-async function saveMessage(name, message) {
-    const user = auth.currentUser;
+// Function to increment or create the visits field
+function incrementVisitsCount(userId) {
+    var userDocRef = firestore.collection('users').doc(userId);
 
-    if (!user) {
-        throw new Error('User not authenticated');
-    }
+    // Check if the document exists
+    userDocRef.get()
+        .then(function(doc) {
+            if (doc.exists) {
+                // Document exists, update the visits field
+                var existingVisits = doc.data().visitsCount || 0;
+                userDocRef.update({
+                    visitsCount: existingVisits + 1
+                })
+                .then(function() {
+                    // Visits field updated successfully
+                    console.log('Visits updated successfully');
+                })
+                .catch(function(error) {
+                    console.error("Error updating visits:", error);
+                });
+            } else {
+                // Document doesn't exist, create it with visits field
+                userDocRef.set({
+                    visitsCount: 1
+                })
+                .then(function() {
+                    // Document and visits field created successfully
+                    console.log('Document and visits field created successfully');
+                })
+                .catch(function(error) {
+                    console.error("Error creating document and visits field:", error);
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error("Error checking document existence:", error);
+        });
+}
 
-    try {
-        // Check if user exists in 'users' collection
-        const userDoc = await firestore.collection('users').doc(user.uid).get();
 
-        if (userDoc.exists) {
-            // User exists in 'users' collection
-            const userData = userDoc.data();
-            const country = await getBrowserCountry(); // Get browser country
+// Fetch and display user details
+fetchUserIdByUsername(username)
+    .then(userId => {
+        const userDocRef = firestore.collection('users').doc(userId);
 
-            // Prepare message data with additional fields
+        userDocRef.get()
+            .then(doc => {
+                if (doc.exists) {
+                    const { name: userName, status: bio, photoUrl: profilePhoto } = doc.data();
+
+                    const profilePhotoElement = document.getElementById('profilePhoto');
+                    if (profilePhoto) {
+                        profilePhotoElement.src = profilePhoto;
+                    } else {
+                        profilePhotoElement.style.display = 'none';
+                    }
+
+                    var visitsCount = doc.data().visitsCount || 0; // Initialize to 0 if not present
+					// Update the visitsCount field in your HTML
+					document.getElementById('visits').textContent = `Visits : ${visitsCount}`;
+					// Call the function with the user's userId
+					incrementVisitsCount(userId);
+
+                    const bioElement = document.getElementById('bio');
+                    if (bio) {
+                        bioElement.innerHTML = `&ldquo;${bio}&rdquo;`;
+                    } else {
+                        bioElement.textContent = 'Be Honest';
+                    }
+
+                    const messageElement = document.getElementById('message');
+                    const userNameElement = document.getElementById('userName');
+                    if (userName) {
+                        messageElement.placeholder = `Type your message to "${userName}" send privately here...`;
+                        userNameElement.textContent = userName;
+                    } else {
+                        messageElement.placeholder = 'Type your message to this user...';
+                        userNameElement.textContent = 'Be Honest';
+                    }
+                } else {
+                    console.error("User document not found in Firestore");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching user document:", error);
+            });
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+        document.getElementById('message').placeholder = 'Something went wrong...';
+        document.getElementById('bio').textContent = 'Oops';
+        document.getElementById('userName').textContent = 'Be Honest';
+        document.getElementById('profilePhoto').style.display = 'none';
+
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        const invalidUserIdToast = document.getElementById('invalid-user-id-toast');
+        if (invalidUserIdToast) {
+            invalidUserIdToast.style.display = 'block';
+            setTimeout(() => {
+                invalidUserIdToast.style.display = 'none';
+            }, 3000);
+        }
+    });
+
+// Function to save the message
+function saveMessage(name, message) {
+    fetchUserIdByUsername(username)
+        .then(userId => {
+            const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
+            const messageTimestamp = Date.now();
+
             const messageData = {
                 name,
                 message,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                timestamp: messageTimestamp,
                 isNew: true,
-                isPinned: false,
-                secretSender: userData.name,
-                secretSenderPhotoUrl: userData.photoUrl,
-                country,
+                isPinned: false
             };
 
-            // Save message in 'secrets' collection under the user's document
-            const userMessagesCollection = firestore.collection('users').doc(user.uid).collection('secrets');
-            await userMessagesCollection.add(messageData);
+            userMessagesCollection.add(messageData)
+                .then(docRef => {
+                   // console.log("Message saved successfully with ID: ", docRef.id);
 
-            // Additional actions (e.g., UI updates, notifications)
-            showSuccessToast();
-            updateCharacterCount();
-            clearForm();
-            sendNotificationToUser(user.uid);
-        } else {
-            // User not found in 'users' collection, check 'anonymousUsers' collection
-            const anonUserDoc = await firestore.collection('anonymousUsers').doc(user.uid).get();
-
-            if (!anonUserDoc.exists) {
-                // User not found in either collection, create in 'anonymousUsers' collection
-                const country = await getBrowserCountry(); // Get browser country
-                await firestore.collection('anonymousUsers').doc(user.uid).set({
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    country,
+                    const loadingDialog = document.getElementById('loading-dialog');
+                    if (loadingDialog) {
+                        loadingDialog.style.display = 'none';
+                    }
+                    showSuccessToast();
+                    updateCharacterCount();
+                    document.getElementById('contact-form').reset();
+                    sendNotificationToUser(userId);
+                })
+                .catch(error => {
+                    console.error("Error saving message:", error);
                 });
-
-                console.log('New user created in anonymousUsers collection');
-            }
-        }
-    } catch (error) {
-        console.error('Error saving message:', error);
-        throw error;
-    }
-}
-
-// Function to get browser country using Geolocation API
-function getBrowserCountry() {
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
-                fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.country) {
-                            resolve(data.country);
-                        } else {
-                            resolve('Unknown');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching geolocation data:', error);
-                        resolve('Unknown');
-                    });
-            }, error => {
-                console.error('Geolocation error:', error);
-                resolve('Unknown');
-            });
-        } else {
-            resolve('Unknown');
-        }
-    });
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
 }
 
 // Function to update the character count
@@ -195,40 +257,40 @@ function sendemoji(emoji) {
     messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
 }
 
-// Function to send notification to user using FCM
 function sendNotificationToUser(userId) {
-    const usersCollection = firestore.collection('users');
+  const usersCollection = firestore.collection('users');
 
-    usersCollection.doc(userId).get()
-        .then(doc => {
-            if (doc.exists) {
-                const { token: userFCMToken, notificationsOn } = doc.data();
+  usersCollection.doc(userId).get()
+    .then(doc => {
+      if (doc.exists) {
+        const { token: userFCMToken, notificationsOn } = doc.data();
 
-                if (notificationsOn === true && userFCMToken) {
-                    const notification = {
-                        to: userFCMToken,
-                        notification: {
-                            title: "New Secret Received",
-                            body: "You have received a new secret. Click to view.",
-                            channel_id: "channel_id",
-                            icon: "icon", // Use the correct small icon name
-                            image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
-                        },
-                    };
-                    sendNotification(notification);
-                } else {
-                    console.log("Notifications are turned off for the user or FCM token not found.");
-                }
-            } else {
-                console.error("User document not found in Firestore");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user document:", error);
-        });
+        if (notificationsOn === true && userFCMToken) {
+          const notification = {
+            to: userFCMToken,
+            notification: {
+              title: "سر جديد",
+              body: "لقد استقبلت سر جديد اضغط للمعاينه",
+              channel_id: "channel_id",
+              icon: "icon", // Use the correct small icon name
+              image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
+            },
+          };
+          sendNotification(notification);
+        } else {
+          console.log("Notifications are turned off for the user or FCM token not found.");
+        }
+      } else {
+        console.error("User document not found in Firestore");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching user document:", error);
+    });
 }
 
-// Function to send notification using FCM
+
+
 function sendNotification(notification) {
     const options = {
         method: "POST",
