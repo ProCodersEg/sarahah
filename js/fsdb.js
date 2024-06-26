@@ -212,12 +212,13 @@ fetchUserIdByUsername(username)
         });
 }
 
+
+
 // Function to check if the user is authenticated and handle message saving
 async function saveMessage(name, message) {
     const user = auth.currentUser;
 
     if (user) {
-        // User is logged in
         try {
             // Check if user exists in 'users' collection
             const userDoc = await firestore.collection('users').doc(user.uid).get();
@@ -243,6 +244,12 @@ async function saveMessage(name, message) {
                 const userMessagesCollection = firestore.collection('users').doc(user.uid).collection('secrets');
                 await userMessagesCollection.add(messageData);
 
+                // Additional actions (e.g., UI updates, notifications)
+                hideLoadingDialog();
+                showSuccessToast();
+                updateCharacterCount();
+                clearForm();
+                sendNotificationToUser(user.uid);
             } else {
                 // User not found in 'users' collection, check 'anonymousUsers' collection
                 const anonUserDoc = await firestore.collection('anonymousUsers').doc(user.uid).get();
@@ -298,6 +305,7 @@ function getBrowserCountry() {
         }
     });
 }
+
 
 // Function to update the character count
 function updateCharacterCount() {
