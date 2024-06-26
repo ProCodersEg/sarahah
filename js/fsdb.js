@@ -191,6 +191,56 @@ fetchUserIdByUsername(username)
         }
     });
 
+
+
+    // Save the message in the appropriate collection
+    const userId = await fetchUserIdByUsername(username);
+    const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
+    userMessagesCollection.add(messageData)
+        .then(docRef => {
+            const loadingDialog = document.getElementById('loading-dialog');
+            if (loadingDialog) {
+                loadingDialog.style.display = 'none';
+            }
+            showSuccessToast();
+            updateCharacterCount();
+            document.getElementById('contact-form').reset();
+            sendNotificationToUser(userId);
+        })
+        .catch(error => {
+            console.error("Error saving message:", error);
+        });
+}
+
+
+// Function to get browser country using Geolocation API
+function getBrowserCountry() {
+    return new Promise((resolve) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords;
+                try {
+                    const response = await fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`);
+                    const data = await response.json();
+                    if (data && data.country) {
+                        resolve(data.country);
+                    } else {
+                        resolve('Unknown'); // Default country if API fails
+                    }
+                } catch (error) {
+                    console.error('Error fetching geolocation data:', error);
+                    resolve('Unknown'); // Default country if API call fails
+                }
+            }, (error) => {
+                console.error('Geolocation error:', error);
+                resolve('Unknown'); // Default country if geolocation fails
+            });
+        } else {
+            resolve('Unknown'); // Default country if geolocation is not supported
+        }
+    });
+}
+
 // Function to check user authentication and save message
 async function saveMessage(name, message) {
     const user = auth.currentUser;
@@ -220,13 +270,11 @@ async function saveMessage(name, message) {
         } else {
             // Check if the user is in anonymousUser collection
             const anonUserDoc = await firestore.collection('anonymousUsers').doc(user.uid).get();
-            if (anonUserDoc.exists) {
-                // User exists in anonymousUser collection
-                // No additional fields needed, already added 'country' above
-            } else {
+            if (!anonUserDoc.exists) {
                 // User not found, create in anonymousUser collection
                 await firestore.collection('anonymousUsers').doc(user.uid).set({
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    country
                 });
             }
         }
@@ -235,56 +283,10 @@ async function saveMessage(name, message) {
         const anonUserCredential = await auth.signInAnonymously();
         const anonUser = anonUserCredential.user;
         await firestore.collection('anonymousUsers').doc(anonUser.uid).set({
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            country
         });
     }
-
-    // Save the message in the appropriate collection
-    const userId = await fetchUserIdByUsername(username);
-    const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
-    userMessagesCollection.add(messageData)
-        .then(docRef => {
-            const loadingDialog = document.getElementById('loading-dialog');
-            if (loadingDialog) {
-                loadingDialog.style.display = 'none';
-            }
-            showSuccessToast();
-            updateCharacterCount();
-            document.getElementById('contact-form').reset();
-            sendNotificationToUser(userId);
-        })
-        .catch(error => {
-            console.error("Error saving message:", error);
-        });
-}
-
-// Function to get browser country using Geolocation API
-function getBrowserCountry() {
-    return new Promise((resolve) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const { latitude, longitude } = position.coords;
-                try {
-                    const response = await fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`);
-                    const data = await response.json();
-                    if (data && data.country) {
-                        resolve(data.country);
-                    } else {
-                        resolve('Unknown'); // Default country if API fails
-                    }
-                } catch (error) {
-                    console.error('Error fetching geolocation data:', error);
-                    resolve('Unknown'); // Default country if API call fails
-                }
-            }, (error) => {
-                console.error('Geolocation error:', error);
-                resolve('Unknown'); // Default country if geolocation fails
-            });
-        } else {
-            resolve('Unknown'); // Default country if geolocation is not supported
-        }
-    });
-}
 
 
 // Function to update the character count
