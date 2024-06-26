@@ -11,6 +11,7 @@ var firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = app.firestore();
+const auth = app.auth();
 
 let messaging;
 if (firebase.messaging.isSupported()) {
@@ -190,42 +191,90 @@ fetchUserIdByUsername(username)
         }
     });
 
-// Function to save the message
-function saveMessage(name, message) {
-    fetchUserIdByUsername(username)
-        .then(userId => {
-            const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
-            const messageTimestamp = Date.now();
+// Function to check user authentication and save message
+async function saveMessage(name, message) {
+    const user = auth.currentUser;
 
-            const messageData = {
-                name,
-                message,
-                timestamp: messageTimestamp,
-                isNew: true,
-                isPinned: false
-            };
+    // Get browser location (country)
+    const country = await getBrowserCountry();
 
-            userMessagesCollection.add(messageData)
-                .then(docRef => {
-                   // console.log("Message saved successfully with ID: ", docRef.id);
+    // Initialize message data with common fields
+    const messageTimestamp = Date.now();
+    const messageData = {
+        name,
+        message,
+        timestamp: messageTimestamp,
+        isNew: true,
+        isPinned: false,
+        country,
+    };
 
-                    const loadingDialog = document.getElementById('loading-dialog');
-                    if (loadingDialog) {
-                        loadingDialog.style.display = 'none';
-                    }
-                    showSuccessToast();
-                    updateCharacterCount();
-                    document.getElementById('contact-form').reset();
-                    sendNotificationToUser(userId);
-                })
-                .catch(error => {
-                    console.error("Error saving message:", error);
+    if (user) {
+        // User is logged in
+        const userDoc = await firestore.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+            // User exists in Firestore
+            const userData = userDoc.data();
+            messageData.secretSender = userData.name;
+            messageData.secretSenderPhotoUrl = userData.photoUrl;
+        } else {
+            // Check if the user is in anonymousUser collection
+            const anonUserDoc = await firestore.collection('anonymousUsers').doc(user.uid).get();
+            if (anonUserDoc.exists) {
+                // User exists in anonymousUser collection
+                // No additional fields needed, already added 'country' above
+            } else {
+                // User not found, create in anonymousUser collection
+                await firestore.collection('anonymousUsers').doc(user.uid).set({
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+            }
+        }
+    } else {
+        // User is not logged in, create an anonymous user
+        const anonUserCredential = await auth.signInAnonymously();
+        const anonUser = anonUserCredential.user;
+        await firestore.collection('anonymousUsers').doc(anonUser.uid).set({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    }
+
+    // Save the message in the appropriate collection
+    const userId = await fetchUserIdByUsername(username);
+    const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
+    userMessagesCollection.add(messageData)
+        .then(docRef => {
+            const loadingDialog = document.getElementById('loading-dialog');
+            if (loadingDialog) {
+                loadingDialog.style.display = 'none';
+            }
+            showSuccessToast();
+            updateCharacterCount();
+            document.getElementById('contact-form').reset();
+            sendNotificationToUser(userId);
         })
         .catch(error => {
-            console.error('Error:', error.message);
+            console.error("Error saving message:", error);
         });
 }
+
+// Function to get browser country using Geolocation API
+function getBrowserCountry() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`)
+                    .then(response => response.json())
+                    .then(data => resolve(data.country))
+                    .catch(error => reject(error));
+            });
+        } else {
+            resolve('Unknown'); // Default country if geolocation is not supported
+        }
+    });
+}
+
 
 // Function to update the character count
 function updateCharacterCount() {
