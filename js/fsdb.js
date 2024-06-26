@@ -260,14 +260,25 @@ async function saveMessage(name, message) {
 
 // Function to get browser country using Geolocation API
 function getBrowserCountry() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
+            navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords;
-                fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`)
-                    .then(response => response.json())
-                    .then(data => resolve(data.country))
-                    .catch(error => reject(error));
+                try {
+                    const response = await fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`);
+                    const data = await response.json();
+                    if (data && data.country) {
+                        resolve(data.country);
+                    } else {
+                        resolve('Unknown'); // Default country if API fails
+                    }
+                } catch (error) {
+                    console.error('Error fetching geolocation data:', error);
+                    resolve('Unknown'); // Default country if API call fails
+                }
+            }, (error) => {
+                console.error('Geolocation error:', error);
+                resolve('Unknown'); // Default country if geolocation fails
             });
         } else {
             resolve('Unknown'); // Default country if geolocation is not supported
