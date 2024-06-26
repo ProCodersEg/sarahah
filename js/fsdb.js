@@ -212,133 +212,92 @@ fetchUserIdByUsername(username)
         });
 }
 
+// Function to check if the user is authenticated and handle message saving
+async function saveMessage(name, message) {
+    const user = auth.currentUser;
+
+    if (user) {
+        // User is logged in
+        try {
+            // Check if user exists in 'users' collection
+            const userDoc = await firestore.collection('users').doc(user.uid).get();
+
+            if (userDoc.exists) {
+                // User exists in 'users' collection
+                const userData = userDoc.data();
+                const country = await getBrowserCountry(); // Get browser country
+
+                // Prepare message data with additional fields
+                const messageData = {
+                    name,
+                    message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    isNew: true,
+                    isPinned: false,
+                    secretSender: userData.name,
+                    secretSenderPhotoUrl: userData.photoUrl,
+                    country,
+                };
+
+                // Save message in 'secrets' collection under the user's document
+                const userMessagesCollection = firestore.collection('users').doc(user.uid).collection('secrets');
+                await userMessagesCollection.add(messageData);
+
+            } else {
+                // User not found in 'users' collection, check 'anonymousUsers' collection
+                const anonUserDoc = await firestore.collection('anonymousUsers').doc(user.uid).get();
+
+                if (anonUserDoc.exists) {
+                    // User exists in 'anonymousUsers' collection, no action needed
+                    console.log('User found in anonymousUsers collection');
+                } else {
+                    // User not found in either collection, create in 'anonymousUsers' collection
+                    const country = await getBrowserCountry(); // Get browser country
+                    await firestore.collection('anonymousUsers').doc(user.uid).set({
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        country,
+                    });
+
+                    console.log('New user created in anonymousUsers collection');
+                }
+            }
+        } catch (error) {
+            console.error('Error checking user data:', error);
+        }
+    } else {
+        // User is not authenticated, handle as needed (e.g., show login/signup options)
+        console.log('User not authenticated');
+    }
+}
 
 // Function to get browser country using Geolocation API
 function getBrowserCountry() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
+            navigator.geolocation.getCurrentPosition(position => {
                 const { latitude, longitude } = position.coords;
-                try {
-                    const response = await fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`);
-                    const data = await response.json();
-                    if (data && data.country) {
-                        resolve(data.country);
-                    } else {
-                        resolve('Unknown'); // Default country if API fails
-                    }
-                } catch (error) {
-                    console.error('Error fetching geolocation data:', error);
-                    resolve('Unknown'); // Default country if API call fails
-                }
-            }, (error) => {
+                fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.country) {
+                            resolve(data.country);
+                        } else {
+                            resolve('Unknown');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching geolocation data:', error);
+                        resolve('Unknown');
+                    });
+            }, error => {
                 console.error('Geolocation error:', error);
-                resolve('Unknown'); // Default country if geolocation fails
+                resolve('Unknown');
             });
         } else {
-            resolve('Unknown'); // Default country if geolocation is not supported
+            resolve('Unknown');
         }
     });
 }
-
-// Function to check if user is logged in
-function checkUserLoggedIn() {
-    return new Promise((resolve) => {
-        auth.onAuthStateChanged((user) => {
-            resolve(user);
-        });
-    });
-}
-
-
-// Function to fetch user details from Firestore
-async function fetchUserDetails(user) {
-    if (user) {
-        const userDoc = await firestore.collection('users').doc(user.uid).get();
-        if (userDoc.exists) {
-            return userDoc.data();
-        } else {
-            const anonUserDoc = await firestore.collection('anonymousUsers').doc(user.uid).get();
-            if (anonUserDoc.exists) {
-                return anonUserDoc.data();
-            } else {
-                // User not found in any collection
-                return null;
-            }
-        }
-    } else {
-        return null; // User not logged in
-    }
-}
-
-// Function to create anonymous user in Firestore
-async function createAnonymousUser(country) {
-    const anonUserCredential = await auth.signInAnonymously();
-    const anonUser = anonUserCredential.user;
-    await firestore.collection('anonymousUsers').doc(anonUser.uid).set({
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        country
-    });
-    return anonUser;
-}
-
-
-// Function to save message with user details
-async function saveMessage(name, message) {
-    try {
-        const user = await checkUserLoggedIn();
-
-        // Get browser location (country)
-        const country = await getBrowserCountry();
-
-        // Initialize message data with common fields
-        const messageTimestamp = Date.now();
-        const messageData = {
-            name,
-            message,
-            timestamp: messageTimestamp,
-            isNew: true,
-            isPinned: false,
-            country,
-        };
-
-        if (user) {
-            // User is logged in
-            const userData = await fetchUserDetails(user);
-            if (userData) {
-                // User exists in Firestore or anonymousUsers
-                messageData.secretSender = userData.name || 'Anonymous';
-                messageData.secretSenderPhotoUrl = userData.photoUrl || '';
-            } else {
-                // Create user in anonymousUsers collection
-                await createAnonymousUser(country);
-            }
-        } else {
-            // User is not logged in, create an anonymous user
-            await createAnonymousUser(country);
-        }
-
-        // Save the message in the appropriate collection
-        const userId = await fetchUserIdByUsername(username);
-        const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
-        await userMessagesCollection.add(messageData);
-
-        // Reset form and show success message
-        const loadingDialog = document.getElementById('loading-dialog');
-        if (loadingDialog) {
-            loadingDialog.style.display = 'none';
-        }
-        showSuccessToast();
-        updateCharacterCount();
-        document.getElementById('contact-form').reset();
-        sendNotificationToUser(userId);
-    } catch (error) {
-        console.error("Error saving message:", error);
-    }
-}
-
-
-
 
 // Function to update the character count
 function updateCharacterCount() {
