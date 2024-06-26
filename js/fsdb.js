@@ -273,13 +273,11 @@ function sendNotificationToUser(userId) {
               body: "لقد استقبلت سر جديد اضغط للمعاينه",
               channel_id: "channel_id",
               icon: "icon", // Use the correct small icon name
-              largeIcon: "icon" // Add large icon name here
-            },
-            android: { // Add Android-specific notification options
-              priority: "high", // Set notification priority (optional)
+              largeIcon: "icon",
+		priority: "high", // Set notification priority (optional)
               vibrate: true, // Enable vibration
-		vibrationPattern: [1000, 500, 1000, 500]
-            }
+		vibrationPattern: [1000, 500, 1000, 500]// Add large icon name here
+            },
           };
           sendNotification(notification);
         } else {
