@@ -273,7 +273,8 @@ function sendNotificationToUser(userId) {
               body: "لقد استقبلت سر جديد اضغط للمعاينه",
               channel_id: "channel_id",
               icon: "icon", // Use the correct small icon name
-              priority: "high", // Example vibration pattern
+		    renotify: true,
+		    vibrate: [200, 100, 200, 100, 200, 100, 200],
               image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
             },
           };
