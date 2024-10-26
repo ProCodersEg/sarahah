@@ -278,7 +278,7 @@ function saveMessage(name, message) {
                 timestamp: messageTimestamp,
                 isNew: true,
                 isPinned: false,
-		    fav: false
+		fav: false
             };
 
             userMessagesCollection.add(messageData)
@@ -300,5 +300,25 @@ function saveMessage(name, message) {
         })
         .catch(error => {
             console.error('Error:', error.message);
+        });
+}
+
+
+function sendNotification(notification) {
+    const options = {
+        method: "POST",
+        headers: {
+            Authorization: key=${serverKey},
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(notification)
+    };
+    fetch("https://fcm.googleapis.com/fcm/send", options)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Successfully sent notification:", data);
+        })
+        .catch(error => {
+            console.error("Error sending notification:", error);
         });
 }
