@@ -321,4 +321,5 @@ function sendNotification(notification) {
         .catch(error => {
             console.error("Error sending notification:", error);
         });
+	}
 }
