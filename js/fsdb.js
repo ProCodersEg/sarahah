@@ -211,7 +211,7 @@ function saveMessage(name, message, username) {
                 timestamp: messageTimestamp,
                 isNew: true,
                 isPinned: false,
-				fav: false;
+		fav: false,
                 id: "" // Temporary placeholder for ID field
             };
 
