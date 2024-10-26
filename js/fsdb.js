@@ -265,63 +265,40 @@ function sendemoji(emoji) {
     messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
 }
 
-function sendNotificationToUser(userId) {
-  const usersCollection = firestore.collection('users');
+// Function to save the message
+function saveMessage(name, message) {
+    fetchUserIdByUsername(username)
+        .then(userId => {
+            const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
+            const messageTimestamp = Date.now();
 
-  usersCollection.doc(userId).get()
-    .then(doc => {
-      if (doc.exists) {
-        const { token: userFCMToken, notificationsOn } = doc.data();
+            const messageData = {
+                name,
+                message,
+                timestamp: messageTimestamp,
+                isNew: true,
+                isPinned: false,
+		    fav: false
+            };
 
-        if (notificationsOn === true && userFCMToken) {
-          const notification = {
-            to: userFCMToken,
-            notification: {
-              title: "سر جديد",
-              body: "لقد استقبلت سر جديد اضغط للمعاينه",
-              icon: "icon", // Use the correct small icon name
-              image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp"
-            },
-            android: {
-              priority: "high",
-              notification: {
-                channel_id: "channel_id",  // Must match Android client-side channel
-                sound: "default",
-                image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp"
-              }
-            },
-            priority: "high"
-          };
-          sendNotification(notification);
-        } else {
-          console.log("Notifications are turned off for the user or FCM token not found.");
-        }
-      } else {
-        console.error("User document not found in Firestore");
-      }
-    })
-    .catch(error => {
-      console.error("Error fetching user document:", error);
-    });
-}
+            userMessagesCollection.add(messageData)
+                .then(docRef => {
+                   // console.log("Message saved successfully with ID: ", docRef.id);
 
-
-
-function sendNotification(notification) {
-    const options = {
-        method: "POST",
-        headers: {
-            Authorization: `key=${serverKey}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(notification)
-    };
-    fetch("https://fcm.googleapis.com/fcm/send", options)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Successfully sent notification:", data);
+                    const loadingDialog = document.getElementById('loading-dialog');
+                    if (loadingDialog) {
+                        loadingDialog.style.display = 'none';
+                    }
+                    showSuccessToast();
+                    updateCharacterCount();
+                    document.getElementById('contact-form').reset();
+                    sendNotificationToUser(userId);
+                })
+                .catch(error => {
+                    console.error("Error saving message:", error);
+                });
         })
         .catch(error => {
-            console.error("Error sending notification:", error);
+            console.error('Error:', error.message);
         });
 }
