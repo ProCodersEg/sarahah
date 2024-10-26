@@ -191,41 +191,70 @@ fetchUserIdByUsername(username)
     });
 
 // Function to save the message
-function saveMessage(name, message) {
+function saveMessage(name, message, username) {
+    // Display loading dialog while the message is being saved
+    const loadingDialog = document.getElementById('loading-dialog');
+    if (loadingDialog) {
+        loadingDialog.style.display = 'block';
+    }
+
+    // Fetch userId based on username
     fetchUserIdByUsername(username)
         .then(userId => {
             const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
             const messageTimestamp = Date.now();
 
+            // Message data with placeholder for ID (will be updated after doc creation)
             const messageData = {
                 name,
                 message,
                 timestamp: messageTimestamp,
                 isNew: true,
-                isPinned: false
+                isPinned: false,
+				fav: false;
+                id: "" // Temporary placeholder for ID field
             };
 
-            userMessagesCollection.add(messageData)
+            // Add the message to Firestore
+            return userMessagesCollection.add(messageData)
                 .then(docRef => {
-                   // console.log("Message saved successfully with ID: ", docRef.id);
-
-                    const loadingDialog = document.getElementById('loading-dialog');
-                    if (loadingDialog) {
-                        loadingDialog.style.display = 'none';
-                    }
-                    showSuccessToast();
-                    updateCharacterCount();
-                    document.getElementById('contact-form').reset();
-                    sendNotificationToUser(userId);
-                })
-                .catch(error => {
-                    console.error("Error saving message:", error);
+                    // Update message data with document ID
+                    return docRef.update({ id: docRef.id }).then(() => docRef);
                 });
         })
+        .then(docRef => {
+            // Successfully saved message with ID
+            console.log("Message saved successfully with ID: ", docRef.id);
+
+            // Hide the loading dialog
+            if (loadingDialog) {
+                loadingDialog.style.display = 'none';
+            }
+
+            // Show success notification to the user
+            showSuccessToast();
+            updateCharacterCount();
+
+            // Reset the form
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.reset();
+            }
+
+            // Send notification to the user
+            sendNotificationToUser(docRef.id);
+        })
         .catch(error => {
-            console.error('Error:', error.message);
+            console.error("Error saving message:", error);
+
+            // Hide loading dialog and show an error message if any error occurs
+            if (loadingDialog) {
+                loadingDialog.style.display = 'none';
+            }
+            showErrorToast("Failed to save message. Please try again later.");
         });
 }
+
 
 // Function to update the character count
 function updateCharacterCount() {
