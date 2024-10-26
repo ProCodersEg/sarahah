@@ -191,22 +191,9 @@ fetchUserIdByUsername(username)
     });
 
 // Function to save the message
-function saveMessage(name, message, username) {
-    if (!username) {
-        console.error("Error: Username is undefined.");
-        showErrorToast("Cannot save message: Username is missing.");
-        return;
-    }
-
-    const loadingDialog = document.getElementById('loading-dialog');
-    if (loadingDialog) {
-        loadingDialog.style.display = 'block';
-    }
-
+function saveMessage(name, message) {
     fetchUserIdByUsername(username)
         .then(userId => {
-            if (!userId) throw new Error("User ID not found.");
-
             const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
             const messageTimestamp = Date.now();
 
@@ -216,31 +203,35 @@ function saveMessage(name, message, username) {
                 timestamp: messageTimestamp,
                 isNew: true,
                 isPinned: false,
-                fav: false,
-                id: ""
+		fav: false
             };
 
-            return userMessagesCollection.add(messageData)
-                .then(docRef => docRef.update({ id: docRef.id }).then(() => docRef));
-        })
-        .then(docRef => {
-            console.log("Message saved successfully with ID: ", docRef.id);
+            userMessagesCollection.add(messageData)
+                .then(docRef => {
+                    // Update the document to add the id field with the document's ID
+                    return docRef.update({ id: docRef.id }).then(() => docRef);
+                })
+                .then(docRef => {
+                    // Hide loading dialog if it exists
+                    const loadingDialog = document.getElementById('loading-dialog');
+                    if (loadingDialog) {
+                        loadingDialog.style.display = 'none';
+                    }
 
-            if (loadingDialog) loadingDialog.style.display = 'none';
-            showSuccessToast();
-            updateCharacterCount();
-
-            const contactForm = document.getElementById('contact-form');
-            if (contactForm) contactForm.reset();
-            sendNotificationToUser(docRef.id);
+                    showSuccessToast();
+                    updateCharacterCount();
+                    document.getElementById('contact-form').reset();
+                    sendNotificationToUser(userId);
+                })
+                .catch(error => {
+                    console.error("Error saving message:", error);
+                });
         })
         .catch(error => {
-            console.error("Error saving message:", error);
-
-            if (loadingDialog) loadingDialog.style.display = 'none';
-            showErrorToast("Failed to save message. Please try again later.");
+            console.error('Error:', error.message);
         });
 }
+
 
 
 
