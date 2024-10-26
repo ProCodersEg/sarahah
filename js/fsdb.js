@@ -191,48 +191,69 @@ fetchUserIdByUsername(username)
     });
 
 // Function to save the message
-function saveMessage(name, message) {
+function saveMessage(name, message, username) {
+    // Display loading dialog while the message is being saved
+    const loadingDialog = document.getElementById('loading-dialog');
+    if (loadingDialog) {
+        loadingDialog.style.display = 'block';
+    }
+
+    // Fetch userId based on username
     fetchUserIdByUsername(username)
         .then(userId => {
             const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
             const messageTimestamp = Date.now();
 
+            // Message data with placeholder for ID (will be updated after doc creation)
             const messageData = {
                 name,
                 message,
                 timestamp: messageTimestamp,
                 isNew: true,
                 isPinned: false,
-		fav: false
+				fav: false;
+                id: "" // Temporary placeholder for ID field
             };
 
-            userMessagesCollection.add(messageData)
+            // Add the message to Firestore
+            return userMessagesCollection.add(messageData)
                 .then(docRef => {
-                    // Update the document to add the id field with the document's ID
+                    // Update message data with document ID
                     return docRef.update({ id: docRef.id }).then(() => docRef);
-                })
-                .then(docRef => {
-                    // Hide loading dialog if it exists
-                    const loadingDialog = document.getElementById('loading-dialog');
-                    if (loadingDialog) {
-                        loadingDialog.style.display = 'none';
-                    }
-
-                    showSuccessToast();
-                    updateCharacterCount();
-                    document.getElementById('contact-form').reset();
-                    sendNotificationToUser(userId);
-                })
-                .catch(error => {
-                    console.error("Error saving message:", error);
                 });
         })
+        .then(docRef => {
+            // Successfully saved message with ID
+            console.log("Message saved successfully with ID: ", docRef.id);
+
+            // Hide the loading dialog
+            if (loadingDialog) {
+                loadingDialog.style.display = 'none';
+            }
+
+            // Show success notification to the user
+            showSuccessToast();
+            updateCharacterCount();
+
+            // Reset the form
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.reset();
+            }
+
+            // Send notification to the user
+            sendNotificationToUser(docRef.id);
+        })
         .catch(error => {
-            console.error('Error:', error.message);
+            console.error("Error saving message:", error);
+
+            // Hide loading dialog and show an error message if any error occurs
+            if (loadingDialog) {
+                loadingDialog.style.display = 'none';
+            }
+            showErrorToast("Failed to save message. Please try again later.");
         });
 }
-
-
 
 
 // Function to update the character count
@@ -265,50 +286,45 @@ function sendemoji(emoji) {
     messageInput.setSelectionRange(startPos + emoji.length, startPos + emoji.length);
 }
 
-// Function to save the message
-function saveMessage(name, message) {
-    fetchUserIdByUsername(username)
-        .then(userId => {
-            const userMessagesCollection = firestore.collection('users').doc(userId).collection('secrets');
-            const messageTimestamp = Date.now();
+function sendNotificationToUser(userId) {
+  const usersCollection = firestore.collection('users');
 
-            const messageData = {
-                name,
-                message,
-                timestamp: messageTimestamp,
-                isNew: true,
-                isPinned: false,
-		fav: false
-            };
+  usersCollection.doc(userId).get()
+    .then(doc => {
+      if (doc.exists) {
+        const { token: userFCMToken, notificationsOn } = doc.data();
 
-            userMessagesCollection.add(messageData)
-                .then(docRef => {
-                   // console.log("Message saved successfully with ID: ", docRef.id);
-
-                    const loadingDialog = document.getElementById('loading-dialog');
-                    if (loadingDialog) {
-                        loadingDialog.style.display = 'none';
-                    }
-                    showSuccessToast();
-                    updateCharacterCount();
-                    document.getElementById('contact-form').reset();
-                    sendNotificationToUser(userId);
-                })
-                .catch(error => {
-                    console.error("Error saving message:", error);
-                });
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-        });
+        if (notificationsOn === true && userFCMToken) {
+          const notification = {
+            to: userFCMToken,
+            notification: {
+              title: "سر جديد",
+              body: "لقد استقبلت سر جديد اضغط للمعاينه",
+              channel_id: "channel_id",
+              icon: "icon", // Use the correct small icon name
+              image: "https://www.sarhne.com/blog/media/2021-11-27-2149488.webp" // URL to the large icon
+            },
+          };
+          sendNotification(notification);
+        } else {
+          console.log("Notifications are turned off for the user or FCM token not found.");
+        }
+      } else {
+        console.error("User document not found in Firestore");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching user document:", error);
+    });
 }
+
 
 
 function sendNotification(notification) {
     const options = {
         method: "POST",
         headers: {
-            Authorization: key=${serverKey},
+            Authorization: `key=${serverKey}`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify(notification)
@@ -321,5 +337,4 @@ function sendNotification(notification) {
         .catch(error => {
             console.error("Error sending notification:", error);
         });
-	}
 }
