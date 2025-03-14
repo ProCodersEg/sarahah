@@ -18,6 +18,6 @@
     "name": "Sound 3",
     "sound_name": "move.mp3",
     "ad_enabled": 1,
-    "is_visible": 1
+    "is_visible": 0
   }
 ]
