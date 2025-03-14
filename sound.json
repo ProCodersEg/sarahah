@@ -1,5 +1,5 @@
 {
-    "version": 4,
+    "version": 5,
     "sounds": [
         {
             "id": "1",
@@ -7,7 +7,7 @@
             "sound_name": "move.mp3",
             "ad_enabled": 1,
             "is_visible": 1,
-            "isOffline": true
+            "isOffline": 1
         },
       {
             "id": "2",
@@ -15,7 +15,7 @@
             "sound_name": "move.mp3",
             "ad_enabled": 1,
             "is_visible": 1,
-            "isOffline": true
+            "isOffline": 1
         },
       {
             "id": "3",
@@ -23,7 +23,7 @@
             "sound_name": "move.mp3",
             "ad_enabled": 1,
             "is_visible": 1,
-            "isOffline": true
+            "isOffline": 1
         }
        
       
