@@ -1,12 +1,12 @@
 {
-    "version": 8,
+    "version": 10,
     "sounds": [
         {
             "id": "1",
             "name": "Sound 1",
             "sound_name": "move.mp3",
             "ad_enabled": 1,
-            "is_visible": 0,
+            "is_visible": 1,
             "isOffline": 1
         },
       {
@@ -25,15 +25,6 @@
             "is_visible": 1,
             "isOffline": 1
         },
-
-        {
-            "id": "4",
-            "name": "Sound 1",
-            "sound_name": "move.mp3",
-            "ad_enabled": 1,
-            "is_visible": 1,
-            "isOffline": 1
-        }
        
       
     ]
