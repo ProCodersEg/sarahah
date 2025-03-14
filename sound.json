@@ -1,5 +1,5 @@
 {
-    "version": 10,
+    "version": 11,
     "sounds": [
         {
             "id": "1",
@@ -24,7 +24,7 @@
             "ad_enabled": 1,
             "is_visible": 1,
             "isOffline": 1
-        },
+        }
        
       
     ]
