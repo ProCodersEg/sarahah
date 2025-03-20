@@ -1,39 +1,19 @@
 {
-    "version": 1,
-    "sounds": [
-        {
-            "id": "1",
-            "name": "sound 1",
-            "sound_name": "am.mp3",
-            "ad_enabled": 1,
-            "is_visible": 1,
-            "isOffline": 1
-        },
-      {
-            "id": "2",
-            "name": "Sound 2",
-            "sound_name": "mr.mp3",
-            "ad_enabled": 1,
-            "is_visible": 1,
-            "isOffline": 1
-        },
-      {
-            "id": "3",
-            "name": "Sound 3",
-            "sound_name": "qb.mp3",
-            "ad_enabled": 1,
-            "is_visible": 1,
-            "isOffline": 1
-        },
-        {
-            "id": "4",
-            "name": "Sound 4",
-            "sound_name": "yh.mp3",
-            "ad_enabled": 1,
-            "is_visible": 1,
-            "isOffline": 1
-        }
-       
-      
-    ]
-}
+  "version": 2,
+  "ads": {
+    "banner": "ca-app-pub-3940256099942544/6300978111",
+    "fullAd": "ca-app-pub-3940256099942544/1033173712",
+    "openAd": "ca-app-pub-3940256099942544/3419835294",
+    "rewardAd": "ca-app-pub-3940256099942544/5224354917"
+  },
+  "sounds": [
+    {
+      "id": "1",
+      "name": "AM Sound",
+      "sound_name": "am.mp3",
+      "rewardEnabled": false,
+      "isVisiable": true,
+      "isOffline": true
+    }
+  ]
+} 
