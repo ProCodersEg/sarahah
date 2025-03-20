@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "ads": {
     "banner": "ca-app-pub-3940256099942544/6300978111",
     "fullAd": "ca-app-pub-3940256099942544/1033173712",
@@ -9,7 +9,7 @@
   "sounds": [
     {
       "id": "1",
-      "name": "AM Sound",
+      "name": "Songyyyy",
       "sound_name": "am.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
@@ -21,7 +21,7 @@
       "name": "yh Sound",
       "sound_name": "yh.mp3",
       "rewardEnabled": false,
-      "isVisiable": false,
+      "isVisiable": true,
       "isOffline": true
     }
   ]
