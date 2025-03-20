@@ -1,5 +1,5 @@
 {
-  "version": 20,
+  "version": 21,
   "ads": {
     "banner": "ca-app-pub-3940256099942544/6300978111",
     "fullAd": "ca-app-pub-3940256099942544/1033173712",
@@ -9,7 +9,7 @@
   "sounds": [
     {
       "id": "1",
-      "name": "123",
+      "name": "song name her",
       "sound_name": "am.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
@@ -18,10 +18,10 @@
 
      {
       "id": "2",
-      "name": "yh Sound",
+      "name": "12 Sound",
       "sound_name": "yh.mp3",
       "rewardEnabled": false,
-      "isVisiable": false,
+      "isVisiable": true,
       "isOffline": true
     }
   ]
