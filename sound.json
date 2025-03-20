@@ -21,7 +21,7 @@
       "name": "yh Sound",
       "sound_name": "yh.mp3",
       "rewardEnabled": false,
-      "isVisiable": true,
+      "isVisiable": false,
       "isOffline": true
     }
   ]
