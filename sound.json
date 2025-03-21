@@ -1,5 +1,5 @@
 {
-  "version": 30,
+  "version": 35,
   "ads": {
     "banner": "ca-app-pub-3940256099942544/6300978111",
     "fullAd": "ca-app-pub-3940256099942544/1033173712",
@@ -30,7 +30,7 @@
       "name": "3 Sound",
       "sound_name": "yh.mp3",
       "rewardEnabled": false,
-      "isVisiable": false,
+      "isVisiable": true,
       "isOffline": true
     }
   ]
