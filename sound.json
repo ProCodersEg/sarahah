@@ -1,15 +1,15 @@
 {
-  "version": 41,
+  "version": 45,
   "ads": {
     "banner": "ca-app-pub-3940256099942544/6300978111",
     "fullAd": "ca-app-pub-3940256099942544/1033173712",
-    "openAd": "ca-app-pub-3940256099942544/3419835294",
+    "openAd": "ca-app-pub-3940256099942544/9257395921",
     "rewardAd": "ca-app-pub-3940256099942544/5224354917"
   },
   "sounds": [
     {
       "id": "1",
-      "name": "song name her",
+      "name": "song 22",
       "sound_name": "am.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
