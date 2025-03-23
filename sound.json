@@ -1,7 +1,10 @@
 {
-  "version": 47,
+  "version": 50,
   "ads": {
-    "banner": "ca-app-pub-3940256099942544/6300978111",
+    "musicListBanner": "ca-app-pub-3940256099942544/9214589741",
+    "onlineBanner": "ca-app-pub-3940256099942544/9214589741",
+    "wallpaperBanner": "ca-app-pub-3940256099942544/9214589741",
+    
     "fullAd": "ca-app-pub-3940256099942544/1033173712",
     "openAd": "ca-app-pub-3940256099942544/9257395921",
     "rewardAd": "ca-app-pub-3940256099942544/5224354917"
