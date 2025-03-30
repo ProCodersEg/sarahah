@@ -1,5 +1,5 @@
 {
-  "version": 51,
+  "version": 100,
   "ads": {
     "musicListBanner": "ca-app-pub-3940256099942544/9214589741",
     "onlineBanner": "ca-app-pub-3940256099942544/9214589741",
@@ -21,79 +21,8 @@
 
      {
       "id": "2",
-      "name": "12 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": false,
-      "isOffline": true
-    },
-
-     {
-      "id": "3",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "4",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-     {
-      "id": "5",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "6",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "7",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "8",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "9",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "10",
-      "name": "3 Sound",
-      "sound_name": "yh.mp3",
+      "name": "Will be not exist",
+      "sound_name": "sdsfsdf.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
       "isOffline": true
