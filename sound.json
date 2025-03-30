@@ -22,7 +22,7 @@
      {
       "id": "2",
       "name": "Will be not exist",
-      "sound_name": "affm.mp3",
+      "sound_name": "am.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
       "isOffline": true
