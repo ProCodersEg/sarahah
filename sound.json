@@ -1,5 +1,5 @@
 {
-  "version": 160,
+  "version": 161,
   "ads": {
     "musicListBanner": "ca-app-pub-3940256099942544/9214589741",
     "onlineBanner": "ca-app-pub-3940256099942544/9214589741",
@@ -22,7 +22,7 @@
      {
       "id": "2",
       "name": "Will be not exist",
-      "sound_name": "am.mp3",
+      "sound_name": "affm.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
       "isOffline": true
@@ -32,15 +32,6 @@
       "id": "3",
       "name": "Will be not exist",
       "sound_name": "am.mp3",
-      "rewardEnabled": false,
-      "isVisiable": true,
-      "isOffline": true
-    },
-
-     {
-      "id": "3",
-      "name": "exist",
-      "sound_name": "amc.mp3",
       "rewardEnabled": false,
       "isVisiable": true,
       "isOffline": true
