@@ -1,5 +1,5 @@
 {
-  "version": 162,
+  "version": 163,
   "ads": {
     "musicListBanner": "ca-app-pub-3940256099942544/9214589741",
     "onlineBanner": "ca-app-pub-3940256099942544/9214589741",
@@ -15,7 +15,7 @@
       "name": "song 22",
       "sound_name": "am.mp3",
       "rewardEnabled": false,
-      "isVisiable": true,
+      "isVisiable": false,
       "isOffline": true
     },
 
